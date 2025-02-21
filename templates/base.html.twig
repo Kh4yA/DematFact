@@ -12,6 +12,16 @@
         {% endblock %}
     </head>
     <body>
+        <section class="sidebar">
+        {% block sidebar %}{% endblock %}
+        </section>
+        <header>
+        {% block header %}{% endblock %}
+        </header>
         {% block body %}{% endblock %}
+        <footer>
+        {% block footer %}
+        {% endblock %}
+        </footer>
     </body>
 </html>
