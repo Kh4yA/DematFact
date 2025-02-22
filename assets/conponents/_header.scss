@@ -1,0 +1,19 @@
+header{
+    position: relative;
+    height: 7vh;
+    width: 100vw;
+    background: linear-gradient(90deg, rgba(85, 170, 255, 1) 0%, rgb(61, 100, 230) 100%);
+    .logo {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+
+        svg {
+            fill: rgb(13, 2, 66);
+            width: clamp(3.75rem, 0.3846rem + 13.4615vw, 12.5rem);
+            height: auto;
+        }
+    }
+
+}
