@@ -6,13 +6,11 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -35,12 +33,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column]
-    private bool $isVerified = false;
-
-    #[ORM\Column(type: "string", length: 15, nullable: true)]
-    private ?string $phoneNumber = null;
-
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
@@ -50,14 +42,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+    #[ORM\Column]
+    private ?bool $actif = null;
+
+    #[ORM\Column]
+    private ?bool $isverified = null;
+
     #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Organisation $organisation_id = null;
+    private ?Organisation $organisation = null;
 
     /**
-     * @var Collection<int, Factures>
+     * @var Collection<int, Facture>
      */
-    #[ORM\OneToMany(targetEntity: Factures::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Facture::class, mappedBy: 'user')]
     private Collection $factures;
+
+    #[ORM\Column(length: 255)]
+    private ?string $phone_number = null;
 
     public function __construct()
     {
@@ -139,28 +140,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function isVerified(): bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setIsVerified(bool $isVerified): static
-    {
-        $this->isVerified = $isVerified;
-
-        return $this;
-    }
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phoneNumber;
-    }
-
-    public function setPhoneNumber(?string $phoneNumber): self
-    {
-        $this->phoneNumber = $phoneNumber;
-        return $this;
-    }
-
     public function getNom(): ?string
     {
         return $this->nom;
@@ -197,44 +176,80 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getOrganisationId(): ?organisation
+    public function isActif(): ?bool
     {
-        return $this->organisation_id;
+        return $this->actif;
     }
 
-    public function setOrganisationId(?organisation $organisation_id): static
+    public function setActif(bool $actif): static
     {
-        $this->organisation_id = $organisation_id;
+        $this->actif = $actif;
+
+        return $this;
+    }
+
+    public function isverified(): ?bool
+    {
+        return $this->isverified;
+    }
+
+    public function setIsverified(bool $isverified): static
+    {
+        $this->isverified = $isverified;
+
+        return $this;
+    }
+
+    public function getOrganisation(): ?Organisation
+    {
+        return $this->organisation;
+    }
+
+    public function setOrganisation(?Organisation $organisation): static
+    {
+        $this->organisation = $organisation;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Factures>
+     * @return Collection<int, Facture>
      */
     public function getFactures(): Collection
     {
         return $this->factures;
     }
 
-    public function addFacture(Factures $facture): static
+    public function addFacture(Facture $facture): static
     {
         if (!$this->factures->contains($facture)) {
             $this->factures->add($facture);
-            $facture->setUserId($this);
+            $facture->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeFacture(Factures $facture): static
+    public function removeFacture(Facture $facture): static
     {
         if ($this->factures->removeElement($facture)) {
             // set the owning side to null (unless already changed)
-            if ($facture->getUserId() === $this) {
-                $facture->setUserId(null);
+            if ($facture->getUser() === $this) {
+                $facture->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    public function setPhoneNumber(string $phone_number): static
+    {
+        $this->phone_number = $phone_number;
 
         return $this;
     }

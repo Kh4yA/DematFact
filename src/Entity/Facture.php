@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\FacturesRepository;
+use App\Repository\FactureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FacturesRepository::class)]
-class Factures
+#[ORM\Entity(repositoryClass: FactureRepository::class)]
+class Facture
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,11 +28,14 @@ class Factures
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $total_ht = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $total_tva = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $total_ttc = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $remise_pourcent = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $remise = null;
@@ -40,25 +43,28 @@ class Factures
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'factures')]
-    private ?clients $client_id = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_emission = null;
 
     #[ORM\ManyToOne(inversedBy: 'factures')]
-    private ?user $user_id = null;
+    private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'factures')]
-    private ?Organisation $organisation_id = null;
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'factures')]
+    private ?Organisation $organisation = null;
 
     /**
-     * @var Collection<int, Paiements>
+     * @var Collection<int, Paiement>
      */
-    #[ORM\OneToMany(targetEntity: Paiements::class, mappedBy: 'facture_id')]
+    #[ORM\OneToMany(targetEntity: Paiement::class, mappedBy: 'facture')]
     private Collection $paiements;
 
     /**
-     * @var Collection<int, FactureLignes>
+     * @var Collection<int, FactureLigne>
      */
-    #[ORM\OneToMany(targetEntity: FactureLignes::class, mappedBy: 'facture_id')]
+    #[ORM\OneToMany(targetEntity: FactureLigne::class, mappedBy: 'facture')]
     private Collection $factureLignes;
 
     public function __construct()
@@ -125,7 +131,7 @@ class Factures
         return $this->total_tva;
     }
 
-    public function setTotalTva(?string $total_tva): static
+    public function setTotalTva(string $total_tva): static
     {
         $this->total_tva = $total_tva;
 
@@ -144,6 +150,18 @@ class Factures
         return $this;
     }
 
+    public function getRemisePourcent(): ?string
+    {
+        return $this->remise_pourcent;
+    }
+
+    public function setRemisePourcent(?string $remise_pourcent): static
+    {
+        $this->remise_pourcent = $remise_pourcent;
+
+        return $this;
+    }
+
     public function getRemise(): ?string
     {
         return $this->remise;
@@ -156,78 +174,90 @@ class Factures
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpadatedAt(): ?\DateTimeImmutable
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
+    public function setUpadatedAt(?\DateTimeImmutable $upadated_at): static
     {
-        $this->updated_at = $updated_at;
+        $this->updated_at = $upadated_at;
 
         return $this;
     }
 
-    public function getClientId(): ?clients
+    public function getDateEmission(): ?\DateTimeInterface
     {
-        return $this->client_id;
+        return $this->date_emission;
     }
 
-    public function setClientId(?clients $client_id): static
+    public function setDateEmission(?\DateTimeInterface $date_emission): static
     {
-        $this->client_id = $client_id;
+        $this->date_emission = $date_emission;
 
         return $this;
     }
 
-    public function getUserId(): ?user
+    public function getClient(): ?Client
     {
-        return $this->user_id;
+        return $this->client;
     }
 
-    public function setUserId(?user $user_id): static
+    public function setClient(?Client $client): static
     {
-        $this->user_id = $user_id;
+        $this->client = $client;
 
         return $this;
     }
 
-    public function getOrganisationId(): ?organisation
+    public function getUser(): ?User
     {
-        return $this->organisation_id;
+        return $this->user;
     }
 
-    public function setOrganisationId(?organisation $organisation_id): static
+    public function setUser(?User $user): static
     {
-        $this->organisation_id = $organisation_id;
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getOrganisation(): ?Organisation
+    {
+        return $this->organisation;
+    }
+
+    public function setOrganisation(?Organisation $organisation): static
+    {
+        $this->organisation = $organisation;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Paiements>
+     * @return Collection<int, Paiement>
      */
     public function getPaiements(): Collection
     {
         return $this->paiements;
     }
 
-    public function addPaiement(Paiements $paiement): static
+    public function addPaiement(Paiement $paiement): static
     {
         if (!$this->paiements->contains($paiement)) {
             $this->paiements->add($paiement);
-            $paiement->setFactureId($this);
+            $paiement->setFacture($this);
         }
 
         return $this;
     }
 
-    public function removePaiement(Paiements $paiement): static
+    public function removePaiement(Paiement $paiement): static
     {
         if ($this->paiements->removeElement($paiement)) {
             // set the owning side to null (unless already changed)
-            if ($paiement->getFactureId() === $this) {
-                $paiement->setFactureId(null);
+            if ($paiement->getFacture() === $this) {
+                $paiement->setFacture(null);
             }
         }
 
@@ -235,29 +265,29 @@ class Factures
     }
 
     /**
-     * @return Collection<int, FactureLignes>
+     * @return Collection<int, FactureLigne>
      */
     public function getFactureLignes(): Collection
     {
         return $this->factureLignes;
     }
 
-    public function addFactureLigne(FactureLignes $factureLigne): static
+    public function addFactureLigne(FactureLigne $factureLigne): static
     {
         if (!$this->factureLignes->contains($factureLigne)) {
             $this->factureLignes->add($factureLigne);
-            $factureLigne->setFactureId($this);
+            $factureLigne->setFacture($this);
         }
 
         return $this;
     }
 
-    public function removeFactureLigne(FactureLignes $factureLigne): static
+    public function removeFactureLigne(FactureLigne $factureLigne): static
     {
         if ($this->factureLignes->removeElement($factureLigne)) {
             // set the owning side to null (unless already changed)
-            if ($factureLigne->getFactureId() === $this) {
-                $factureLigne->setFactureId(null);
+            if ($factureLigne->getFacture() === $this) {
+                $factureLigne->setFacture(null);
             }
         }
 

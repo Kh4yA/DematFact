@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\PrestationsRepository;
+use App\Repository\PrestationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PrestationsRepository::class)]
-class Prestations
+#[ORM\Entity(repositoryClass: PrestationRepository::class)]
+class Prestation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,16 +28,16 @@ class Prestations
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $prix_ht = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $taxe = null;
 
     #[ORM\ManyToOne(inversedBy: 'prestations')]
-    private ?Organisation $organisation_id = null;
+    private ?Organisation $organisation = null;
 
     /**
-     * @var Collection<int, FactureLignes>
+     * @var Collection<int, FactureLigne>
      */
-    #[ORM\OneToMany(targetEntity: FactureLignes::class, mappedBy: 'prestation_id')]
+    #[ORM\OneToMany(targetEntity: FactureLigne::class, mappedBy: 'prestation')]
     private Collection $factureLignes;
 
     public function __construct()
@@ -103,49 +103,49 @@ class Prestations
         return $this->taxe;
     }
 
-    public function setTaxe(?string $taxe): static
+    public function setTaxe(string $taxe): static
     {
         $this->taxe = $taxe;
 
         return $this;
     }
 
-    public function getOrganisationId(): ?organisation
+    public function getOrganisation(): ?Organisation
     {
-        return $this->organisation_id;
+        return $this->organisation;
     }
 
-    public function setOrganisationId(?organisation $organisation_id): static
+    public function setOrganisation(?Organisation $organisation): static
     {
-        $this->organisation_id = $organisation_id;
+        $this->organisation = $organisation;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, FactureLignes>
+     * @return Collection<int, FactureLigne>
      */
     public function getFactureLignes(): Collection
     {
         return $this->factureLignes;
     }
 
-    public function addFactureLigne(FactureLignes $factureLigne): static
+    public function addFactureLigne(FactureLigne $factureLigne): static
     {
         if (!$this->factureLignes->contains($factureLigne)) {
             $this->factureLignes->add($factureLigne);
-            $factureLigne->setPrestationId($this);
+            $factureLigne->setPrestation($this);
         }
 
         return $this;
     }
 
-    public function removeFactureLigne(FactureLignes $factureLigne): static
+    public function removeFactureLigne(FactureLigne $factureLigne): static
     {
         if ($this->factureLignes->removeElement($factureLigne)) {
             // set the owning side to null (unless already changed)
-            if ($factureLigne->getPrestationId() === $this) {
-                $factureLigne->setPrestationId(null);
+            if ($factureLigne->getPrestation() === $this) {
+                $factureLigne->setPrestation(null);
             }
         }
 

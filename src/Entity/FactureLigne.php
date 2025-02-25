@@ -2,19 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\FactureLignesRepository;
+use App\Repository\FactureLigneRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FactureLignesRepository::class)]
-class FactureLignes
+#[ORM\Entity(repositoryClass: FactureLigneRepository::class)]
+class FactureLigne
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
@@ -26,20 +26,20 @@ class FactureLignes
     #[ORM\Column]
     private ?int $quantite = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $ligne_totale_ht = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $ligne_totale_ttc = null;
 
     #[ORM\ManyToOne(inversedBy: 'factureLignes')]
-    private ?Factures $facture_id = null;
+    private ?Facture $facture = null;
 
     #[ORM\ManyToOne(inversedBy: 'factureLignes')]
-    private ?Organisation $organisation_id = null;
+    private ?Organisation $organisation = null;
 
     #[ORM\ManyToOne(inversedBy: 'factureLignes')]
-    private ?Prestations $prestation_id = null;
+    private ?Prestation $prestation = null;
 
     public function getId(): ?int
     {
@@ -51,7 +51,7 @@ class FactureLignes
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
@@ -99,7 +99,7 @@ class FactureLignes
         return $this->ligne_totale_ht;
     }
 
-    public function setLigneTotaleHt(?string $ligne_totale_ht): static
+    public function setLigneTotaleHt(string $ligne_totale_ht): static
     {
         $this->ligne_totale_ht = $ligne_totale_ht;
 
@@ -118,38 +118,38 @@ class FactureLignes
         return $this;
     }
 
-    public function getFactureId(): ?Factures
+    public function getFacture(): ?Facture
     {
-        return $this->facture_id;
+        return $this->facture;
     }
 
-    public function setFactureId(?Factures $facture_id): static
+    public function setFacture(?Facture $facture): static
     {
-        $this->facture_id = $facture_id;
+        $this->facture = $facture;
 
         return $this;
     }
 
-    public function getOrganisationId(): ?organisation
+    public function getOrganisation(): ?Organisation
     {
-        return $this->organisation_id;
+        return $this->organisation;
     }
 
-    public function setOrganisationId(?organisation $organisation_id): static
+    public function setOrganisation(?Organisation $organisation): static
     {
-        $this->organisation_id = $organisation_id;
+        $this->organisation = $organisation;
 
         return $this;
     }
 
-    public function getPrestationId(): ?Prestations
+    public function getPrestation(): ?Prestation
     {
-        return $this->prestation_id;
+        return $this->prestation;
     }
 
-    public function setPrestationId(?Prestations $prestation_id): static
+    public function setPrestation(?Prestation $prestation): static
     {
-        $this->prestation_id = $prestation_id;
+        $this->prestation = $prestation;
 
         return $this;
     }

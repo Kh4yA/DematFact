@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientsRepository;
+use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ClientsRepository::class)]
-class Clients
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
+class Client
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -37,13 +37,16 @@ class Clients
     private ?string $code_postal = null;
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
-    private ?Organisation $organisation_id = null;
+    private ?Organisation $organisation = null;
 
     /**
-     * @var Collection<int, Factures>
+     * @var Collection<int, Facture>
      */
-    #[ORM\OneToMany(targetEntity: Factures::class, mappedBy: 'client_id')]
+    #[ORM\OneToMany(targetEntity: Facture::class, mappedBy: 'client')]
     private Collection $factures;
+
+    #[ORM\Column(length: 255)]
+    private ?string $phone_number = null;
 
     public function __construct()
     {
@@ -139,44 +142,56 @@ class Clients
         return $this;
     }
 
-    public function getOrganisationId(): ?Organisation
+    public function getOrganisation(): ?Organisation
     {
-        return $this->organisation_id;
+        return $this->organisation;
     }
 
-    public function setOrganisationId(?Organisation $organisation_id): static
+    public function setOrganisation(?Organisation $organisation): static
     {
-        $this->organisation_id = $organisation_id;
+        $this->organisation = $organisation;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Factures>
+     * @return Collection<int, Facture>
      */
     public function getFactures(): Collection
     {
         return $this->factures;
     }
 
-    public function addFacture(Factures $facture): static
+    public function addFacture(Facture $facture): static
     {
         if (!$this->factures->contains($facture)) {
             $this->factures->add($facture);
-            $facture->setClientId($this);
+            $facture->setClient($this);
         }
 
         return $this;
     }
 
-    public function removeFacture(Factures $facture): static
+    public function removeFacture(Facture $facture): static
     {
         if ($this->factures->removeElement($facture)) {
             // set the owning side to null (unless already changed)
-            if ($facture->getClientId() === $this) {
-                $facture->setClientId(null);
+            if ($facture->getClient() === $this) {
+                $facture->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    public function setPhoneNumber(string $phone_number): static
+    {
+        $this->phone_number = $phone_number;
 
         return $this;
     }

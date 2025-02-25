@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GestionClientController!
+{% endblock %}
+
+{% block body %}
+	<h1 class='center-text pb1r'>Liste de mes clients</h1>
+	<div class="box-container">
+		<div class="box">
+			<table>
+				<thead>
+					<tr>
+						
+						<th><input type="checkbox" name="selectAll" id="selectAll"></th>
+						<th>nom</th>
+						<th>prenom</th>
+						<th>adresse</th>
+						<th>telephone</th>
+						<th>email</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for client in clients %}
+						<tr>
+							<td><input type="checkbox" name="select" id="select" value={{client.id}}></td>
+							<td>{{ client.nom }}</td>
+							<td>{{ client.prenom }}</td>
+							<td>{{ client.rue }}
+								{{ client.ville }}
+								{{ client.codepostal }}</td>
+							<td>{{ client.phonenumber }}</td>
+							<td>{{ client.email }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

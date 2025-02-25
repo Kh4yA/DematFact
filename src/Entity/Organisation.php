@@ -31,61 +31,54 @@ class Organisation
     private ?string $ville = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $code_postale = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $abonnement_id = null;
-
-    /**
-     * @var Collection<int, Clients>
-     */
-    #[ORM\OneToMany(targetEntity: Clients::class, mappedBy: 'organisation_id')]
-    private Collection $clients;
+    private ?string $code_postal = null;
 
     /**
      * @var Collection<int, User>
      */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'organisation_id')]
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'organisation')]
     private Collection $users;
 
     /**
-     * @var Collection<int, Factures>
+     * @var Collection<int, Client>
      */
-    #[ORM\OneToMany(targetEntity: Factures::class, mappedBy: 'organisation_id')]
+    #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'organisation')]
+    private Collection $clients;
+
+    /**
+     * @var Collection<int, Facture>
+     */
+    #[ORM\OneToMany(targetEntity: Facture::class, mappedBy: 'organisation')]
     private Collection $factures;
 
     /**
-     * @var Collection<int, Paiements>
+     * @var Collection<int, Prestation>
      */
-    #[ORM\OneToMany(targetEntity: Paiements::class, mappedBy: 'organisation_id')]
-    private Collection $paiements;
-
-    /**
-     * @var Collection<int, Prestations>
-     */
-    #[ORM\OneToMany(targetEntity: Prestations::class, mappedBy: 'organisation_id')]
+    #[ORM\OneToMany(targetEntity: Prestation::class, mappedBy: 'organisation')]
     private Collection $prestations;
 
     /**
-     * @var Collection<int, FactureLignes>
+     * @var Collection<int, Paiement>
      */
-    #[ORM\OneToMany(targetEntity: FactureLignes::class, mappedBy: 'organisation_id')]
-    private Collection $factureLignes;
+    #[ORM\OneToMany(targetEntity: Paiement::class, mappedBy: 'organisation')]
+    private Collection $paiements;
 
     /**
-     * @var Collection<int, Users>
+     * @var Collection<int, FactureLigne>
      */
+    #[ORM\OneToMany(targetEntity: FactureLigne::class, mappedBy: 'organisation')]
+    private Collection $factureLignes;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $created_at = null;
 
     public function __construct()
     {
-        $this->clients = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->clients = new ArrayCollection();
         $this->factures = new ArrayCollection();
-        $this->paiements = new ArrayCollection();
         $this->prestations = new ArrayCollection();
+        $this->paiements = new ArrayCollection();
         $this->factureLignes = new ArrayCollection();
     }
 
@@ -154,68 +147,14 @@ class Organisation
         return $this;
     }
 
-    public function getCodePostale(): ?string
+    public function getCodePostal(): ?string
     {
-        return $this->code_postale;
+        return $this->code_postal;
     }
 
-    public function setCodePostale(string $code_postale): static
+    public function setCodePostal(string $code_postal): static
     {
-        $this->code_postale = $code_postale;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getAbonnementId(): ?int
-    {
-        return $this->abonnement_id;
-    }
-
-    public function setAbonnementId(?int $abonnement_id): static
-    {
-        $this->abonnement_id = $abonnement_id;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Clients>
-     */
-    public function getClients(): Collection
-    {
-        return $this->clients;
-    }
-
-    public function addClient(Clients $client): static
-    {
-        if (!$this->clients->contains($client)) {
-            $this->clients->add($client);
-            $client->setOrganisationId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClient(Clients $client): static
-    {
-        if ($this->clients->removeElement($client)) {
-            // set the owning side to null (unless already changed)
-            if ($client->getOrganisationId() === $this) {
-                $client->setOrganisationId(null);
-            }
-        }
+        $this->code_postal = $code_postal;
 
         return $this;
     }
@@ -232,7 +171,7 @@ class Organisation
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
-            $user->setOrganisationId($this);
+            $user->setOrganisation($this);
         }
 
         return $this;
@@ -242,8 +181,8 @@ class Organisation
     {
         if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
-            if ($user->getOrganisationId() === $this) {
-                $user->setOrganisationId(null);
+            if ($user->getOrganisation() === $this) {
+                $user->setOrganisation(null);
             }
         }
 
@@ -251,29 +190,59 @@ class Organisation
     }
 
     /**
-     * @return Collection<int, Factures>
+     * @return Collection<int, Client>
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): static
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients->add($client);
+            $client->setOrganisation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): static
+    {
+        if ($this->clients->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getOrganisation() === $this) {
+                $client->setOrganisation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Facture>
      */
     public function getFactures(): Collection
     {
         return $this->factures;
     }
 
-    public function addFacture(Factures $facture): static
+    public function addFacture(Facture $facture): static
     {
         if (!$this->factures->contains($facture)) {
             $this->factures->add($facture);
-            $facture->setOrganisationId($this);
+            $facture->setOrganisation($this);
         }
 
         return $this;
     }
 
-    public function removeFacture(Factures $facture): static
+    public function removeFacture(Facture $facture): static
     {
         if ($this->factures->removeElement($facture)) {
             // set the owning side to null (unless already changed)
-            if ($facture->getOrganisationId() === $this) {
-                $facture->setOrganisationId(null);
+            if ($facture->getOrganisation() === $this) {
+                $facture->setOrganisation(null);
             }
         }
 
@@ -281,59 +250,29 @@ class Organisation
     }
 
     /**
-     * @return Collection<int, Paiements>
-     */
-    public function getPaiements(): Collection
-    {
-        return $this->paiements;
-    }
-
-    public function addPaiement(Paiements $paiement): static
-    {
-        if (!$this->paiements->contains($paiement)) {
-            $this->paiements->add($paiement);
-            $paiement->setOrganisationId($this);
-        }
-
-        return $this;
-    }
-
-    public function removePaiement(Paiements $paiement): static
-    {
-        if ($this->paiements->removeElement($paiement)) {
-            // set the owning side to null (unless already changed)
-            if ($paiement->getOrganisationId() === $this) {
-                $paiement->setOrganisationId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Prestations>
+     * @return Collection<int, Prestation>
      */
     public function getPrestations(): Collection
     {
         return $this->prestations;
     }
 
-    public function addPrestation(Prestations $prestation): static
+    public function addPrestation(Prestation $prestation): static
     {
         if (!$this->prestations->contains($prestation)) {
             $this->prestations->add($prestation);
-            $prestation->setOrganisationId($this);
+            $prestation->setOrganisation($this);
         }
 
         return $this;
     }
 
-    public function removePrestation(Prestations $prestation): static
+    public function removePrestation(Prestation $prestation): static
     {
         if ($this->prestations->removeElement($prestation)) {
             // set the owning side to null (unless already changed)
-            if ($prestation->getOrganisationId() === $this) {
-                $prestation->setOrganisationId(null);
+            if ($prestation->getOrganisation() === $this) {
+                $prestation->setOrganisation(null);
             }
         }
 
@@ -341,31 +280,73 @@ class Organisation
     }
 
     /**
-     * @return Collection<int, FactureLignes>
+     * @return Collection<int, Paiement>
+     */
+    public function getPaiements(): Collection
+    {
+        return $this->paiements;
+    }
+
+    public function addPaiement(Paiement $paiement): static
+    {
+        if (!$this->paiements->contains($paiement)) {
+            $this->paiements->add($paiement);
+            $paiement->setOrganisation($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaiement(Paiement $paiement): static
+    {
+        if ($this->paiements->removeElement($paiement)) {
+            // set the owning side to null (unless already changed)
+            if ($paiement->getOrganisation() === $this) {
+                $paiement->setOrganisation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FactureLigne>
      */
     public function getFactureLignes(): Collection
     {
         return $this->factureLignes;
     }
 
-    public function addFactureLigne(FactureLignes $factureLigne): static
+    public function addFactureLigne(FactureLigne $factureLigne): static
     {
         if (!$this->factureLignes->contains($factureLigne)) {
             $this->factureLignes->add($factureLigne);
-            $factureLigne->setOrganisationId($this);
+            $factureLigne->setOrganisation($this);
         }
 
         return $this;
     }
 
-    public function removeFactureLigne(FactureLignes $factureLigne): static
+    public function removeFactureLigne(FactureLigne $factureLigne): static
     {
         if ($this->factureLignes->removeElement($factureLigne)) {
             // set the owning side to null (unless already changed)
-            if ($factureLigne->getOrganisationId() === $this) {
-                $factureLigne->setOrganisationId(null);
+            if ($factureLigne->getOrganisation() === $this) {
+                $factureLigne->setOrganisation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

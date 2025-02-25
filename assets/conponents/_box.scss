@@ -1,0 +1,132 @@
+@use '/assets/utils/root' as *;
+
+/*** BOX GRID ***/ 
+.container-grid {
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
+    gap: 2rem; 
+    width: 100%;
+    height: 100%;
+    grid-template-areas: 
+      "graph graph graph graph graph graph action action"
+      "graph graph graph graph graph graph action action"
+      "graph graph graph graph graph graph action action"
+      "graph graph graph graph graph graph info-1 info-1"
+      "graph graph graph graph graph graph info-2 info-2"
+      "tab tab tab tab tab tab tab tab"
+      "tab tab tab tab tab tab tab tab"
+      "tab tab tab tab tab tab tab tab"; 
+}
+
+.graph {
+    grid-area: graph;
+    }
+
+
+.action {
+    grid-area: action;
+}
+
+.info-1 {
+    grid-area: info-1;
+    width: 100%;
+    background: #FFB100;
+    border-radius: $radius-box-top $radius-box-bottom;
+}
+
+.info-2 {
+    grid-area: info-2;
+    width: 100%;
+    background: #FF0E5F;
+    border-radius: $radius-box-top $radius-box-bottom;
+}
+.info-3 {
+    grid-area: info-3;
+    width: 100%;
+    background: #FF0E5F;
+    border-radius: $radius-box-top $radius-box-bottom;
+}
+
+.tab {
+    grid-area: tab;
+    width: 100%;
+
+}
+/*** BOC CONTAINER ***/
+.box-container {
+    box-shadow: $shadow;
+    border-radius: 1rem;
+    width: 100%;
+    height: 100%;
+    background: $color-white;
+
+    .header-box {
+        height: 2.5rem;
+        background: $color-primary;
+        border-radius: $radius-box-top;
+        padding: 0 .5rem;
+
+        h3 {
+            font-size: $font-size-fluid;
+            color: $color-white;
+        }
+    }
+
+    .box {
+        padding: 0.5rem;
+        width: 100%;
+        height: calc(100% - 2.5rem);
+    }
+
+    .choice {
+        transform: rotate(90deg);
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: $color-white;
+    }
+
+    &[class*="info"] {
+        border-radius: 1rem;
+        padding: 0.5rem;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+        input[type=checkbox]{
+            text-align: left;
+        }
+    
+        thead {
+            background: $color-primary-reverse;
+    
+            th {
+                padding: 1.5rem;
+                font-size: 1rem;
+                font-weight: 100;
+                color: $color-white;
+            }
+        }
+    
+        tbody {
+            tr {
+                td {
+                    background-color: $color-primary;
+                    padding: 1rem;
+                    border: 2px solid $color-white;
+                    border-left: none;
+                    border-right: none;
+                }
+            }
+    
+            // Coloration des lignes impaires
+            tr:nth-child(odd) {
+                background-color: $color-grey-light; /* Gris clair */
+            }
+        }
+    }
+}

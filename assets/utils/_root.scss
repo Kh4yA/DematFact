@@ -1,2 +1,24 @@
 // COCLOR
-$color-primary: linear-gradient(90deg, rgba(21,12,164,1) 0%, rgba(85,170,255,1) 100%);
+$color-primary: linear-gradient(90deg, rgb(61, 100, 230) 0%, rgba(85, 170, 255, 1) 100%);
+$color-primary-reverse: linear-gradient(90deg, rgba(85, 170, 255, 1) 0%, rgb(61, 100, 230) 100%);
+$menu-color: rgba(52, 86, 200, 0.389);
+$sous-menu-color: rgba(94, 118, 195, 0.389);
+$hover-sous-menu-color: rgba(94, 118, 195, 0.589);
+$hover-menu-color: rgba(52, 86, 200, 0.589);
+$selected-menu-color: rgba(52, 86, 200, 0.589);
+$shadow: 10px 10px 15px -3px rgba(192, 192, 192, 0.235);
+$color-white: #fff;
+$color-selected:rgba(52, 86, 200, 1);
+$color-grey-light: #dcdcdc;
+
+//FONT_SIZE
+$font-size-small: 1rem;
+$font-size-max: 1.5rem;
+$font-size-fluid: clamp(1rem, 0.427rem + 1.1923vw, 1.5rem);
+
+//RADIUS
+$radius-box-top: .5rem .5rem 0 0;
+$radius-box-bottom: 0 0 .5rem .5rem;
+
+//PADDING
+$padding-size-fluid: clamp(5rem, 9.5842rem + -9.538vw, 1rem);

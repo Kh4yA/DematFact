@@ -6,16 +6,19 @@
 			{% block title %}Welcome!
 			{% endblock %}
 		</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"> {% block stylesheets %}{% endblock %}
-		<link rel="stylesheet" href="{{ asset('build/app.css') }}">
-		<script src="{{ asset('build/app.js') }}"></script>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
 		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
 			{% block importmap %}
 				{{ importmap('app') }}
 			{% endblock %}
+			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
 	</head>
+	<body></body>
 	<body>
 		<div class='container-principal flex flex-wrap'>
 			<header class='header'> {% block header %}{% endblock %}
@@ -24,16 +27,62 @@
 						<path d="M7.13867 4.34766C7.13867 4.89453 7.06836 5.38867 6.92773 5.83008C6.78711 6.26758 6.58984 6.6582 6.33594 7.00195C6.08594 7.3418 5.78711 7.63477 5.43945 7.88086C5.0918 8.12695 4.71094 8.33008 4.29688 8.49023C3.88281 8.64648 3.44141 8.76367 2.97266 8.8418C2.50781 8.91602 2.0293 8.95312 1.53711 8.95312C1.35352 8.95312 1.17383 8.94922 0.998047 8.94141C0.822266 8.92969 0.642578 8.91406 0.458984 8.89453L0.623047 1.03125C1.05273 0.894531 1.49414 0.798828 1.94727 0.744141C2.4043 0.685547 2.85742 0.65625 3.30664 0.65625C3.86523 0.65625 4.37891 0.740234 4.84766 0.908203C5.31641 1.07617 5.7207 1.31836 6.06055 1.63477C6.40039 1.95117 6.66406 2.33789 6.85156 2.79492C7.04297 3.25195 7.13867 3.76953 7.13867 4.34766ZM4.73633 4.72266C4.74023 4.51172 4.7168 4.30859 4.66602 4.11328C4.61914 3.91797 4.53906 3.74609 4.42578 3.59766C4.31641 3.44531 4.17578 3.32422 4.00391 3.23438C3.83203 3.14062 3.62695 3.08984 3.38867 3.08203L3.1543 6.71484C3.38867 6.67969 3.60156 6.60352 3.79297 6.48633C3.98438 6.36523 4.14844 6.21875 4.28516 6.04688C4.42578 5.87109 4.5332 5.67773 4.60742 5.4668C4.68555 5.25195 4.72852 5.03125 4.73633 4.80469V4.72266ZM13.0449 0.550781C13.0215 0.917969 13 1.28125 12.9805 1.64062C12.9609 2 12.9355 2.36328 12.9043 2.73047L10.4199 2.85938L10.3613 3.59766H12.1074L11.9785 5.41406L10.2207 5.47266L10.1621 6.32812H11.6152H12.6465C12.623 6.75781 12.5977 7.18555 12.5703 7.61133C12.5469 8.0332 12.5254 8.45703 12.5059 8.88281L7.45508 9L7.64258 0.550781H13.0449ZM22.3086 0.457031L21.7695 9.05859L19.0977 9.17578L19.1211 4.64062L17.9141 8.29688H16.8828L15.957 5.02734L15.9453 8.82422L13.2383 8.90625L13.3555 0.808594L16.3672 0.691406L17.5625 4.57031L19.1562 0.457031H22.3086ZM30.0254 8.49609L27.1191 8.87109L26.7676 7.54688H25.4316L25.1387 8.87109L22.1504 8.57812L24.4824 0.773438L27.7402 0.609375L30.0254 8.49609ZM26.5566 5.75391L26.1113 3.71484L25.6777 5.75391H26.5566ZM35.6504 0.621094L35.5918 3.10547L33.8457 3.17578L33.4004 8.73047L30.9277 8.85938L30.9395 3.30469L29.1934 3.39844L29.2637 0.632812L35.6504 0.621094ZM41.5215 0.550781C41.498 0.917969 41.4766 1.28125 41.457 1.64062C41.4375 2 41.4121 2.36328 41.3809 2.73047L38.8965 2.85938V3.59766H41.0527L40.9355 5.41406L38.8848 5.47266L38.8965 8.94141L35.9316 9L36.1191 0.550781H41.5215ZM48.4355 8.49609L45.5293 8.87109L45.1777 7.54688H43.8418L43.5488 8.87109L40.5605 8.57812L42.8926 0.773438L46.1504 0.609375L48.4355 8.49609ZM44.9668 5.75391L44.5215 3.71484L44.0879 5.75391H44.9668ZM54.2129 0.761719L53.8848 3.23438C53.7715 3.20312 53.6582 3.18164 53.5449 3.16992C53.4316 3.1582 53.3184 3.15234 53.2051 3.15234C52.916 3.15234 52.6406 3.19141 52.3789 3.26953C52.1172 3.34375 51.8848 3.45898 51.6816 3.61523C51.4824 3.77148 51.3223 3.9668 51.2012 4.20117C51.084 4.43555 51.0254 4.71094 51.0254 5.02734C51.0254 5.23047 51.0566 5.40625 51.1191 5.55469C51.1855 5.70312 51.2773 5.82617 51.3945 5.92383C51.5117 6.02148 51.6504 6.09375 51.8105 6.14062C51.9707 6.1875 52.1465 6.21094 52.3379 6.21094C52.4824 6.21094 52.6328 6.19531 52.7891 6.16406C52.9453 6.13281 53.0996 6.0918 53.252 6.04102C53.4043 5.99023 53.5527 5.93164 53.6973 5.86523C53.8418 5.79883 53.9746 5.73047 54.0957 5.66016L53.8613 8.41406C53.709 8.49219 53.543 8.5625 53.3633 8.625C53.1875 8.68359 53.0059 8.73633 52.8184 8.7832C52.6309 8.82617 52.4434 8.85938 52.2559 8.88281C52.0684 8.90625 51.8887 8.91797 51.7168 8.91797C51.2207 8.91797 50.7578 8.82617 50.3281 8.64258C49.8984 8.45898 49.5254 8.20703 49.209 7.88672C48.8926 7.56641 48.6426 7.18945 48.459 6.75586C48.2793 6.31836 48.1895 5.84766 48.1895 5.34375C48.1895 4.67578 48.2852 4.04688 48.4766 3.45703C48.668 2.86328 48.9492 2.34375 49.3203 1.89844C49.6914 1.45312 50.1504 1.10156 50.6973 0.84375C51.248 0.585938 51.8809 0.457031 52.5957 0.457031C52.8652 0.457031 53.1406 0.478516 53.4219 0.521484C53.707 0.564453 53.9707 0.644531 54.2129 0.761719ZM60.7754 0.621094L60.7168 3.10547L58.9707 3.17578L58.5254 8.73047L56.0527 8.85938L56.0645 3.30469L54.3184 3.39844L54.3887 0.632812L60.7754 0.621094Z" fill="white"/>
 					</svg>
 				</div>
-				</header>
+			</header>
 			<section class="sidebar flex justify-center align-center">
+				<nav class='flex flex-column gap-5px'>
+					<a class="menu {% if route == '/dashbord' %} active {% endif %}" href="{{ path('app_dashbord') }}">Dashboard</a>
+					<details {% if route == '/gestion-client/liste-client' or route == '/gestion-client/creer-client' %} open="true" {% endif %}>
+						<summary class='menu '>Gestion clients</summary>
+						<ul>
+							<li class='sous-menu {% if route == '/gestion-client/liste-client' %} active {% endif %}'>
+								<a href="{{path('app_gestion_client')}}">Liste des clients</a>
+							</li>
+							<li class='sous-menu {% if route == '/gestion-client/creer-client' %} active {% endif %}'>
+								<a href="{{path('app_gestion_client/create')}}">Ajouter un client</a>
+							</li>
+						</ul>
+					</details>
+					<details>
+						<summary class='menu'>Gestion Factures</summary>
+						<ul class='sous-menu'>
+							<li>
+								<a href="/gestion-produit/factures">Liste des factures</a>
+							</li>
+							<li>
+								<a href="/gestion-produit/factures/create">Créer une nouvelle facture</a>
+							</li>
+							<li>
+								<a href="/gestion-produit/devis/create">Créer une nouveau devis</a>
+							</li>
+						</ul>
+					</details>
+					<details>
+						<summary class='menu'>Gestion services</summary>
+						<ul class='sous-menu'>
+							<li>
+								<a href="/gestion-services/services">Liste des services</a>
+							</li>
+							<li>
+								<a href="/gestion-services/services/add">Ajouter un service</a>
+							</li>
+						</ul>
+					</details>
+					<a class='menu' href="#">Suivi des paiements</a>
+					<a class='menu' href="#">Statistiques</a>
+					<a class='menu' href="#">Multi-utilisateurs</a>
+					<a class='menu' href="#">Paramètre</a>
+				</nav>
+
 				{% block sidebar %}{% endblock %}
 			</section>
-            <main>
-				{% block body %}{% endblock %}
-            </main>
+			<main class="">
+				<div class="main-content container1440"> {% block body %}{% endblock %}
+					</div>
+				</main>
 				<footer>
 					{% block footer %}{% endblock %}
 				</footer>
 			</div>
 		</body>
 	</html>
+</body></html>

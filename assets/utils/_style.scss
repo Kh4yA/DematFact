@@ -1,10 +1,17 @@
-body{
-    background-color: #efefef;
+@use '/assets/utils/root' as *;
+html{
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
 }
-.container-principal{
-    gap: 0;
-    margin: 0;
-}
+
 main{
-    width: 80vw;
+    padding: 2rem;
+    background: #f3f3f3;
+    width: 85vw;
+    height: 93vh;
+}
+h1{
+    font-size: 2rem;
+    font-weight: lighter;
+    color: #333;
 }

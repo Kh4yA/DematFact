@@ -2,20 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\PaiementsRepository;
+use App\Repository\PaiementRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PaiementsRepository::class)]
-class Paiements
+#[ORM\Entity(repositoryClass: PaiementRepository::class)]
+class Paiement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_paiement = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $montant = null;
@@ -24,24 +24,24 @@ class Paiements
     private ?string $moyen_paiement = null;
 
     #[ORM\ManyToOne(inversedBy: 'paiements')]
-    private ?Factures $facture_id = null;
+    private ?Facture $facture = null;
 
     #[ORM\ManyToOne(inversedBy: 'paiements')]
-    private ?Organisation $organisation_id = null;
+    private ?Organisation $organisation = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDatePaiement(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->date_paiement;
+        return $this->created_at;
     }
 
-    public function setDatePaiement(\DateTimeInterface $date_paiement): static
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
-        $this->date_paiement = $date_paiement;
+        $this->created_at = $created_at;
 
         return $this;
     }
@@ -70,26 +70,26 @@ class Paiements
         return $this;
     }
 
-    public function getFactureId(): ?Factures
+    public function getFacture(): ?Facture
     {
-        return $this->facture_id;
+        return $this->facture;
     }
 
-    public function setFactureId(?Factures $facture_id): static
+    public function setFacture(?Facture $facture): static
     {
-        $this->facture_id = $facture_id;
+        $this->facture = $facture;
 
         return $this;
     }
 
-    public function getOrganisationId(): ?Organisation
+    public function getOrganisation(): ?Organisation
     {
-        return $this->organisation_id;
+        return $this->organisation;
     }
 
-    public function setOrganisationId(?Organisation $organisation_id): static
+    public function setOrganisation(?Organisation $organisation): static
     {
-        $this->organisation_id = $organisation_id;
+        $this->organisation = $organisation;
 
         return $this;
     }

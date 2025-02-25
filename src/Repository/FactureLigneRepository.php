@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\FactureLignes;
+use App\Entity\FactureLigne;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<FactureLignes>
+ * @extends ServiceEntityRepository<FactureLigne>
  */
-class FactureLignesRepository extends ServiceEntityRepository
+class FactureLigneRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FactureLignes::class);
+        parent::__construct($registry, FactureLigne::class);
     }
 
     //    /**
-    //     * @return FactureLignes[] Returns an array of FactureLignes objects
+    //     * @return FactureLigne[] Returns an array of FactureLigne objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class FactureLignesRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?FactureLignes
+    //    public function findOneBySomeField($value): ?FactureLigne
     //    {
     //        return $this->createQueryBuilder('f')
     //            ->andWhere('f.exampleField = :val')

@@ -1,20 +1,92 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DashbordController!{% endblock %}
-
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Applications/MAMP/htdocs/DematFact/src/Controller/DashbordController.php</code></li>
-        <li>Your template at <code>/Applications/MAMP/htdocs/DematFact/templates/dashbord/index.html.twig</code></li>
-    </ul>
-</div>
+{% block title %}Hello DashbordController!
 {% endblock %}
+
+{% block header %}{% endblock %}
+{% block sidebar %}
+{% endblock %}
+{% block body %}
+	<div class="container-grid">
+		<div class="box-container graph">
+			<div class="header-box flex space-between align-center">
+				<h3>Chiffre d'affaire</h3>
+				<div class="choice">
+					<span>...</span>
+				</div>
+			</div>
+			<div class="box">
+				{{ render_chart(chart) }}
+			</div>
+		</div>
+		<div class="box-container action">
+			<div class="header-box flex space-between align-center">
+				<h3>Action rapide</h3>
+				<div class="choice">
+					<span>...</span>
+				</div>
+			</div>
+			<nav class="box flex flex-wrap flex-column space-evenly align-center gap-5px">
+				<div class='btn-principal flex align-center justify-center'>
+					<a href="">Devis</a>
+				</div>
+				<div class='btn-principal flex align-center justify-center'>
+					<a href="">Facture</a>
+				</div>
+				<div class='btn-principal flex align-center justify-center'>
+					<a href="">Contact</a>
+				</div>
+				<div class='btn-principal flex align-center justify-center'>
+					<a href="">Assistance</a>
+				</div>
+			</nav>
+		</div>
+		<div class="box-container info-1">
+			<div class="devis-attente">
+				<h3>Devis en attente :</h3>
+				<p>3</p>
+			</div>
+		</div>
+		<div class="box-container info-2">
+			<div class="dette-client">
+				<h3>Vos client vous doivent :</h3>
+				<p>1000€</p>
+			</div>
+		</div>
+		<div class="box-container tab">
+			<div class="header-box flex space-between align-center">
+				<h3>Mes derniers objects créés</h3>
+				<div class="choice">
+					<span>...</span>
+				</div>
+			</div>
+			<div class="box">
+				<div class="tab-content">
+					<table>
+						<thead>
+							<tr>
+								<th>Objet</th>
+								<th>Créé le</th>
+								<th>Statut</th>
+								<th>Prix ttc</th>
+								<th>Date d'emission</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for document in documents %}
+								<tr>
+									<td>{{ document.numero }}</td>
+									<td>{{ document.createdat | format_datetime('full','short',locale='fr')}}</td>
+									<td>{{ document.statut }}</td>
+									<td>{{ document.totalttc }}
+										€</td>
+									<td>{{ document.dateemission | format_datetime('full','short',locale='fr') }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+	{% block footer %}{% endblock %}
