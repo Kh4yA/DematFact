@@ -1,4 +1,79 @@
-.container-form{
-    background-color: #b53b3b;
+    @use "/assets/utils/root" as *;
+
+.container-form {
     width: 100%;
+    padding: 1rem;
+
+    h2 {
+        padding: 5rem;
+    }
+
+    .box-choice {
+        gap: 2rem;
+
+        p {
+            font-size: 1.5rem;
+        }
+    }
+    a{
+        color: $color-text;
+        text-decoration: underline;
+    }
+
+    .group-form {
+        gap: 1rem;
+        margin: 0 auto;
+        width: max-content;
+        padding: 2rem; // Ajout d'un padding pour aérer le contenu
+
+        input[type=text],
+        input[type=password],
+        input[type=number] {
+            border: 1px solid $color-primary-reverse; // Remplacement de `$color-grey-light` par une valeur
+            padding: 1rem;
+            font-size: 1rem;
+            width: 100%;
+            border-radius: 5px; // Ajout d’un arrondi pour un design plus doux
+            background-color: $color-input;
+        }
+
+        fieldset {
+            padding: 2rem;
+            gap: 2.5rem;
+            width: 20vw;
+            box-shadow: $shadow;
+
+            legend {
+                font-size: 1.5rem;
+                padding: 1rem;
+            }
+        }
+
+        .adresse {
+            width: calc(40vw + 1rem);
+
+            .adresse-detail {
+                width: 100%;
+
+                input {
+                    width: 18vw;
+                }
+            }
+        }
+
+        .form-pro {
+            width: calc(40vw + 1rem);
+        }
+    }
+
+    .type-client-selected {
+        p{
+            color: $color-selected;
+        }
+    }
+    .type-client-no-selected {
+        p{
+            color: $color-grey-light;
+        }
+    }
 }

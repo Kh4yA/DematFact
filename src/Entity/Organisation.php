@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\OrganisationRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\OrganisationRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OrganisationRepository::class)]
 class Organisation
@@ -13,24 +14,31 @@ class Organisation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('devis','facture')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("organisation")]
     private ?string $designation_sociale = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("organisation")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("organisation")]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("organisation")]
     private ?string $rue = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("organisation")]
     private ?string $ville = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("organisation")]
     private ?string $code_postal = null;
 
     /**
@@ -72,6 +80,13 @@ class Organisation
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+    /**
+     * @var Collection<int, Devis>
+     */
+    #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'organisation')]
+    private Collection $devis;
+
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -80,6 +95,7 @@ class Organisation
         $this->prestations = new ArrayCollection();
         $this->paiements = new ArrayCollection();
         $this->factureLignes = new ArrayCollection();
+        $this->devis = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -350,4 +366,35 @@ class Organisation
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Devis>
+     */
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevis(Devis $devis): static
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis->add($devis);
+            $devis->setOrganisation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevi(Devis $devi): static
+    {
+        if ($this->devis->removeElement($devi)) {
+            // set the owning side to null (unless already changed)
+            if ($devi->getOrganisation() === $this) {
+                $devi->setOrganisation(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

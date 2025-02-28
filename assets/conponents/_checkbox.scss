@@ -1,0 +1,32 @@
+@use '/assets/utils/root' as *;
+
+input[type=checkbox] {
+    -webkit-appearance: none; /* Supprime l'apparence native */
+    appearance: none;
+    width: 1.2rem;
+    height: 1.2em;
+    border: 1px solid $color-grey-light;
+    border-radius: .3rem;
+    background-color: $color-white;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+}
+
+/* Style lorsque la case est cochée */
+input[type=checkbox]:checked {
+    background-color: $color-white; /* Couleur de fond verte */
+    border-color: $validate-color;
+}
+
+/* Ajouter une coche avec ::after */
+input[type=checkbox]:checked::after {
+    content: '✔'; /* Symbole check */
+    color: $validate-color;
+    font-size: 1rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+}

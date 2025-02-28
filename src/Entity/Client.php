@@ -6,6 +6,7 @@ use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
@@ -13,30 +14,38 @@ class Client
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('client:read','devis',)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('client:read')]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('client:read')]
     private ?string $prenom = null;
 
     #[ORM\Column]
+    #[Groups('client:read')]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('client:read')]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('client:read')]
     private ?string $rue = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('client:read')]
     private ?string $ville = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('client:read')]
     private ?string $code_postal = null;
 
-    #[ORM\ManyToOne(inversedBy: 'clients')]
+    #[ORM\ManyToOne(targetEntity: Organisation::class, inversedBy: 'clients')]
     private ?Organisation $organisation = null;
 
     /**
@@ -45,12 +54,44 @@ class Client
     #[ORM\OneToMany(targetEntity: Facture::class, mappedBy: 'client')]
     private Collection $factures;
 
+    /**
+     * @var Collection<int, Devis>
+     */
+    #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'client')]
+    private Collection $devis;
+
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Groups('client:read')]
+    private ?string $tel_portable = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('client:read')]
+    private ?string $tel_fixe = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('client:read')]
+    private ?string $fax = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('client:read')]
+    private ?string $raison_sociale= null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups('client:read')]
+    private ?int $siret = null;
+
+    #[ORM\Column]
+    #[Groups('client:read')]
+    private ?bool $actif = null;
+
     #[ORM\Column(length: 255)]
-    private ?string $phone_number = null;
+    #[Groups('client:read')]
+    private ?string $type = null;
 
     public function __construct()
     {
         $this->factures = new ArrayCollection();
+        $this->devis = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,15 +225,118 @@ class Client
         return $this;
     }
 
-    public function getPhoneNumber(): ?string
+    /**
+     * @return Collection<int, Devis>
+     */
+    public function getDevis(): Collection
     {
-        return $this->phone_number;
+        return $this->devis;
     }
 
-    public function setPhoneNumber(string $phone_number): static
+    public function addDevi(Devis $devi): static
     {
-        $this->phone_number = $phone_number;
+        if (!$this->devis->contains($devi)) {
+            $this->devis->add($devi);
+            $devi->setClient($this);
+        }
 
         return $this;
     }
+
+    public function removeDevi(Devis $devi): static
+    {
+        if ($this->devis->removeElement($devi)) {
+            // set the owning side to null (unless already changed)
+            if ($devi->getClient() === $this) {
+                $devi->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTelPortable(): ?string
+    {
+        return $this->tel_portable;
+    }
+
+    public function setTelPortable(?string $tel_portable): static
+    {
+        $this->tel_portable = $tel_portable;
+
+        return $this;
+    }
+
+    public function getTelFixe(): ?string
+    {
+        return $this->tel_fixe;
+    }
+
+    public function setTelFixe(?string $tel_fixe): static
+    {
+        $this->tel_fixe = $tel_fixe;
+
+        return $this;
+    }
+
+    public function getFax(): ?string
+    {
+        return $this->fax;
+    }
+
+    public function setFax(?string $fax): static
+    {
+        $this->fax = $fax;
+
+        return $this;
+    }
+
+    public function getRaisonSocial(): ?string
+    {
+        return $this->raison_sociale;
+    }
+
+    public function setRaisonSocial(?string $raison_sociale): static
+    {
+        $this->raison_sociale = $raison_sociale;
+
+        return $this;
+    }
+
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(?string $siret): static
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    public function isActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): static
+    {
+        $this->actif = $actif;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
 }

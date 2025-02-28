@@ -1,17 +1,38 @@
 @use '/assets/utils/root' as *;
-html{
+
+html {
     font-size: 14px;
     font-family: 'Times New Roman', Times, serif;
+    color: $color-text;
 }
 
-main{
+body {
+    background-color: $background;
+}
+
+main {
     padding: 2rem;
-    background: #f3f3f3;
+    background: $background;
     width: 85vw;
     height: 93vh;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
 }
-h1{
-    font-size: 2rem;
+
+h1 {
+    font-size: 2.5rem;
     font-weight: lighter;
-    color: #333;
+    color: $color-text;
+    margin: 5rem 0 2rem 0;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 0;
+    color: $color-text;
+}
+
+.full-width main {
+    display: block;
+    width: 100vw;
 }

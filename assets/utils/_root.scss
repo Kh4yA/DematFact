@@ -1,4 +1,5 @@
 // COCLOR
+$background: #f3f3f3;
 $color-primary: linear-gradient(90deg, rgb(61, 100, 230) 0%, rgba(85, 170, 255, 1) 100%);
 $color-primary-reverse: linear-gradient(90deg, rgba(85, 170, 255, 1) 0%, rgb(61, 100, 230) 100%);
 $menu-color: rgba(52, 86, 200, 0.389);
@@ -10,6 +11,14 @@ $shadow: 10px 10px 15px -3px rgba(192, 192, 192, 0.235);
 $color-white: #fff;
 $color-selected:rgba(52, 86, 200, 1);
 $color-grey-light: #dcdcdc;
+$validate-color: rgb(0, 184, 61);
+$color-blue-action:#007bff;
+$color-blue-action-hover:adjust(#007bff, 10);
+$color-text: rgb(31, 30, 30);
+$color-danger: #FF0E5F;
+$color-warning: #FFB100;
+$color-input:#f0f9ff;
+
 
 //FONT_SIZE
 $font-size-small: 1rem;
@@ -19,6 +28,16 @@ $font-size-fluid: clamp(1rem, 0.427rem + 1.1923vw, 1.5rem);
 //RADIUS
 $radius-box-top: .5rem .5rem 0 0;
 $radius-box-bottom: 0 0 .5rem .5rem;
+$radius-btn: .5rem;
 
 //PADDING
 $padding-size-fluid: clamp(5rem, 9.5842rem + -9.538vw, 1rem);
+
+$button-width: 3.5em;
+$button-height: 2em;
+$toggle-diameter: 1.5em;
+$button-toggle-offset: calc(($button-height - $toggle-diameter) / 2);
+$toggle-shadow-offset: 10px;
+$toggle-wider: 3em;
+$color-grey: #cccccc;
+$color-green: #4296f4;

@@ -1,0 +1,31 @@
+@use '/assets/utils/root' as *;
+.paginator{
+padding: 1rem;
+    .pagination-controls{
+        margin: 0 auto;
+        width: 40%;
+    
+        .current-page{
+            width: 2rem;
+            border-radius: $radius-btn;
+            border: 1px solid $color-blue-action;
+            background-color: $color-blue-action;
+            color: $color-white
+        }
+        .previous, .next{
+            padding: .5rem;
+            border-radius: $radius-btn;
+            border: 1px solid $color-blue-action;
+            background-color: $color-white;
+        }
+        .box-page{
+            width: 2rem;
+            border-radius: $radius-btn;
+            border: 1px solid $color-blue-action;
+            color: $color-text;
+        }
+        .three-points{
+            justify-content: end;
+        }
+    }
+}

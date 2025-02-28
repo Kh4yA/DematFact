@@ -1,7 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello GestionClientController!{% endblock %}
+{% block title %}Hello GestionClientController!
+{% endblock %}
 
 {% block body %}
-<h1>Je suis sur la page liste des client</h1>
+	<h1 class='center-text p1br'>CREATION DE COMPTE CLIENT</h1>
+	<div class="box-container" data-controller="form-client">
+		<div class="container-form">
+			<h2 class='center-text'>QUELLES SONT LES INFORMATIONS DE VOTRE CLIENT</h2>
+			<div class='flex'>
+				<div class='flex align-center margin-auto box-choice'>
+					<div class='type-client-selected' data-form-pro-target="clientPro">
+						<p>Client professionnel</p>
+					</div>
+					<div>
+						<label class="switch">
+							<input type="checkbox" data-action="change->form-client#toggleFormPro">
+							<span class="slider"></span>
+						</label>
+					</div>
+					<div class='type-client-no-selected' data-form-pro-target="clientPart">
+						<p>Client particulier</p>
+					</div>
+				</div>
+			</div>
+			{{form_start(createclientform)}}
+			<div class="group-form flex">
+				<fieldset class='flex flex-column'>
+					<legend>Informations du client</legend>
+					<div>
+						{{ form_row(createclientform.nom)}}
+					</div>
+					<div>
+						{{ form_row(createclientform.prenom)}}
+					</div>
+					<div>
+						{{ form_row(createclientform.fax)}}
+					</div>
+				</fieldset>
+				<fieldset class='flex flex-column'>
+					<legend>Informations de contact</legend>
+					{{ form_row(createclientform.email)}}
+					{{ form_row(createclientform.tel_portable)}}
+					{{ form_row(createclientform.tel_fixe)}}
+				</fieldset>
+			</div>
+			<div class="group-form flex flex-column ">
+				<fieldset class='flex flex-column adresse'>
+					<legend>Information sur l'adresse</legend>
+					{{ form_row(createclientform.rue)}}
+					<div class='flex adresse-detail space-between'>
+						{{ form_row(createclientform.ville)}}
+						{{ form_row(createclientform.code_postal)}}
+					</div>
+				</fieldset>
+			</div>
+			<div class="group-form flex flex-column d-none" data-form-pro-target="formPro">
+				<fieldset class='flex flex-column form-pro'>
+					<legend>Complément d'information Entreprise</legend>
+					{{ form_row(createclientform.siret)}}
+					{{ form_row(createclientform.raison_sociale)}}
+				</fieldset>
+			</div>
+			<div class='box-btn flex'>
+				<button type="submit" class="btn btn-principal margin-auto">Enregistrer</button>
+			</div>
+			{{form_end(createclientform)}}
+		</div>
+	</div>
+
 {% endblock %}

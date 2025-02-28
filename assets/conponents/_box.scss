@@ -1,27 +1,27 @@
 @use '/assets/utils/root' as *;
 
-/*** BOX GRID ***/ 
+/*** BOX GRID ***/
 .container-grid {
-    display: grid; 
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
-    gap: 2rem; 
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 2rem;
     width: 100%;
     height: 100%;
-    grid-template-areas: 
-      "graph graph graph graph graph graph action action"
-      "graph graph graph graph graph graph action action"
-      "graph graph graph graph graph graph action action"
-      "graph graph graph graph graph graph info-1 info-1"
-      "graph graph graph graph graph graph info-2 info-2"
-      "tab tab tab tab tab tab tab tab"
-      "tab tab tab tab tab tab tab tab"
-      "tab tab tab tab tab tab tab tab"; 
+    grid-template-areas:
+        "graph graph graph graph graph graph action action"
+        "graph graph graph graph graph graph action action"
+        "graph graph graph graph graph graph action action"
+        "graph graph graph graph graph graph info-1 info-1"
+        "graph graph graph graph graph graph info-2 info-2"
+        "tab tab tab tab tab tab tab tab"
+        "tab tab tab tab tab tab tab tab"
+        "tab tab tab tab tab tab tab tab";
 }
 
 .graph {
     grid-area: graph;
-    }
+}
 
 
 .action {
@@ -31,20 +31,21 @@
 .info-1 {
     grid-area: info-1;
     width: 100%;
-    background: #FFB100;
+    background-color: #FF0E5F;
     border-radius: $radius-box-top $radius-box-bottom;
 }
 
 .info-2 {
     grid-area: info-2;
     width: 100%;
-    background: #FF0E5F;
+    background-color: $color-danger;
     border-radius: $radius-box-top $radius-box-bottom;
 }
+
 .info-3 {
     grid-area: info-3;
     width: 100%;
-    background: #FF0E5F;
+    background-color: $color-danger;
     border-radius: $radius-box-top $radius-box-bottom;
 }
 
@@ -53,6 +54,7 @@
     width: 100%;
 
 }
+
 /*** BOC CONTAINER ***/
 .box-container {
     box-shadow: $shadow;
@@ -97,36 +99,43 @@
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 1rem;
-        input[type=checkbox]{
+
+        input[type=checkbox] {
             text-align: left;
         }
-    
+
         thead {
             background: $color-primary-reverse;
-    
+
             th {
                 padding: 1.5rem;
                 font-size: 1rem;
                 font-weight: 100;
                 color: $color-white;
+                text-align: left;
             }
         }
-    
+
         tbody {
             tr {
                 td {
                     background-color: $color-primary;
-                    padding: 1rem;
+                    padding: 1.5rem;
                     border: 2px solid $color-white;
                     border-left: none;
                     border-right: none;
                 }
             }
-    
+
             // Coloration des lignes impaires
             tr:nth-child(odd) {
-                background-color: $color-grey-light; /* Gris clair */
+                background-color: $color-grey-light;
+                /* Gris clair */
             }
         }
+    }
+
+    .box-action {
+        padding: 1rem;
     }
 }

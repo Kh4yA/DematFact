@@ -1,39 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello GestionClientController!
+{% block title %}Hello DocumentController!
 {% endblock %}
 
 {% block body %}
-	<h1 class='center-text pb1r'>Liste de mes clients</h1>
-	<div class="box-container">
-		<div class="box">
-			<table>
-				<thead>
-					<tr>
-						
-						<th><input type="checkbox" name="selectAll" id="selectAll"></th>
-						<th>nom</th>
-						<th>prenom</th>
-						<th>adresse</th>
-						<th>telephone</th>
-						<th>email</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for client in clients %}
-						<tr>
-							<td><input type="checkbox" name="select" id="select" value={{client.id}}></td>
-							<td>{{ client.nom }}</td>
-							<td>{{ client.prenom }}</td>
-							<td>{{ client.rue }}
-								{{ client.ville }}
-								{{ client.codepostal }}</td>
-							<td>{{ client.phonenumber }}</td>
-							<td>{{ client.email }}</td>
-						</tr>
-					{% endfor %}
+	<h1 class='center-text pb1r'>Mes clients</h1>
+	<div class='box-container' data-controller="client">
+		<div class='box-action flex flex-row-reverse gap-5' data-client-target="divAction">
+			<a class='btn-principal' href="{{ path('app_gestion_client/create') }}">Nouveau client</a>
+		</div>
+		<div class='box'>
+			<table data-client-target="table">
+				<thead data-client-target="tableHead"></thead>
+				<tbody
+					data-client-target="tableBody">
+					<!-- Les documents seront chargés ici -->
 				</tbody>
 			</table>
 		</div>
-	</div>
+
+		<div data-controller="paginator" data-section="client" class='paginator'>
+			<div data-paginator-target="paginationControls" class="pagination-controls flex space-around">
+				<button data-action="click->paginator#previousPage" class='previous'>⟨</button>
+				<div data-container-paginator-target="paginationContainer" class='flex space-around gap-5'>
+				<!-- Les pages seront chargées ici -->
+				</div>
+				<button data-action="click->paginator#nextPage" class='next'>⟩</button>
+			</div>
+		</div>
+		</div>
 {% endblock %}

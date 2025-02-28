@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\FactureRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\FactureRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
 class Facture
@@ -14,36 +15,47 @@ class Facture
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('facture:read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('facture:read')]
     private ?string $numero = null;
 
     #[ORM\Column]
+    #[Groups('facture:read')]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('facture:read')]
     private ?string $statut = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Groups('facture:read')]
     private ?string $total_ht = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Groups('facture:read')]
     private ?string $total_tva = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Groups('facture:read')]
     private ?string $total_ttc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('facture:read')]
     private ?string $remise_pourcent = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[ORM\Column(length:255)]
+    #[Groups('facture:read')]
     private ?string $remise = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('facture')]
     private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups('facture')]
     private ?\DateTimeInterface $date_emission = null;
 
     #[ORM\ManyToOne(inversedBy: 'factures')]
@@ -66,6 +78,7 @@ class Facture
      */
     #[ORM\OneToMany(targetEntity: FactureLigne::class, mappedBy: 'facture')]
     private Collection $factureLignes;
+
 
     public function __construct()
     {
@@ -293,4 +306,5 @@ class Facture
 
         return $this;
     }
+
 }

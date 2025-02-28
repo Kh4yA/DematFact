@@ -9,7 +9,12 @@
 .flex-column {
     flex-direction: column;
 }
-
+.flex-row-reverse{
+    flex-direction: row-reverse;
+}
+.flex-row{
+    flex-direction: row;
+}
 .align-center {
     align-items: center;
 }
@@ -33,7 +38,9 @@
 .space-center {
     justify-content: center;
 }
-
+.space-end{
+    justify-content: flex-end;
+}
 .margin-auto {
     margin-left: auto;
     margin-right: auto;
@@ -52,6 +59,9 @@
 }
 .gap-5px {
     gap: 5px;
+}
+.gap-5{
+    gap: .5rem
 }
 .pb1r{
     padding-bottom: 1rem;
@@ -95,4 +105,7 @@
 
 .w100 {
     width: 100%;
+}
+.d-none{
+    display: none;
 }

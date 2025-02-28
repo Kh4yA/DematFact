@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DocumentController!
+{% endblock %}
+
+{% block body %}
+	<h1 class='center-text pb1r'>Mes devis</h1>
+	<div class='box-container' data-controller="devis">
+		<div class='box-action flex flex-row-reverse gap-5' data-devis-target="divAction">
+			<a class='btn-principal' href="{{path('app_gestion_devis/create')}}">Nouvelle devis</a>
+            </div>
+			<div class='box'>
+				<table data-devis-target="table">
+					<thead data-devis-target="tableHead"></thead>
+					<tbody
+						data-devis-target="tableBody"><!-- Les document seront chargés ici -->
+					</tbody>
+				</table>
+			</div>
+            		<!-- ✅ Ajout d'un div spécifique pour le contrôleur paginator -->
+		<div data-controller="paginator" data-section="devis" class='paginator'>
+			<div data-paginator-target="paginationControls" class="pagination-controls flex space-around">
+				<button data-action="click->paginator#previousPage" class='previous'>⟨</button>
+				<div data-container-paginator-target="paginationContainer" class='flex space-around gap-5'>
+				<!-- Les pages seront chargées ici -->
+				</div>
+				<button data-action="click->paginator#nextPage" class='next'>⟩</button>
+			</div>
+		</div>
+
+		</div>
+	{% endblock %}
