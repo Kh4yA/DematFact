@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			body {
+				position: relative;
+				font-family: Arial, sans-serif;
+				font-size: 14px;
+				background-color: #fff;
+			}
+			.container {
+				width: 100%;
+				max-width: 800px;
+				margin: auto;
+				padding: 20px;
+			}
+
+			/* En-tête */
+			.header-table {
+				width: 100%;
+				margin-bottom: 50px;
+			}
+			.header-table td {
+				vertical-align: middle;
+			}
+			.logo {
+				width: 150px;
+			}
+			.text-right {
+				text-align: right;
+			}
+
+			/* Informations entreprise & client */
+			.info-table {
+				width: 100%;
+				margin-bottom: 20px;
+			}
+			.info-table td {
+				width: 50%;
+				vertical-align: top;
+			}
+
+			/* Contenu */
+			.content {
+				padding: 10px;
+				border: 1px solid black;
+				margin-bottom: 20px;
+			}
+
+			/* Pied de page */
+			.footer {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				text-align: center;
+				font-size: 12px;
+				border-top: 2px solid black;
+				padding-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div
+			class='container'>
+			<!-- ✅ En-tête du devis -->
+			<table class="header-table">
+				<tr>
+					<td><img class="logo" src="{{ absolute_url( asset('images/logo-devasyst.png') ) }}" alt="Logo"></td>
+					<td class="text-right">
+						<p>
+							<b>Devis n°</b>
+							{{ data.devis.numero }}</p>
+						<p>
+							<b>Date :</b>
+							{{ data.devis.date }}</p>
+					</td>
+				</tr>
+			</table>
+
+			<!-- ✅ Informations entreprise et client -->
+			<table class="info-table">
+				<tr>
+					<td>
+						<b>Entreprise :</b><br>
+						{{ data.entreprise.nom }}<br>
+						{{ data.entreprise.adresse }}<br>
+						{{ data.entreprise.tel }}
+					</td>
+					<td class="text-right">
+						<b>Client :</b><br>
+						{{ data.client.nom }}<br>
+						{{ data.client.adresse }}
+					</td>
+				</tr>
+			</table>
+
+			<!-- ✅ Contenu dynamique du devis -->
+			{% if  data.projet.description is defined %}
+				<div class="content">
+					<b>Description du projet :</b><br>
+					{{ data.projet.description }}
+				</div>
+			{% endif %}
+			{% if  data.projet.description is defined %}
+				<div class="content">
+					<b>Conditions générales de vente</b><br>
+					{{ CGV }}
+				</div>
+			{% endif %}
+		</div>
+	</body>
+</html>

@@ -7,7 +7,6 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -24,9 +23,13 @@ final class FactureController extends AbstractController
     #[Route('/document/facture', name: 'app_facture')]
     public function factureInterface(Request $request): Response
     {
+                /** @var User|null $user */
+                $user = $this->getUser();
+
         $route = $request->getRequestUri(); // Alternative propre à $_SERVER['REQUEST_URI']
         return $this->render('facture/facture.html.twig', [
             'route' => $route,
+            'user' => $user,
         ]);
     }
     /**

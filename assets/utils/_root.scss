@@ -7,7 +7,7 @@ $sous-menu-color: rgba(94, 118, 195, 0.389);
 $hover-sous-menu-color: rgba(94, 118, 195, 0.589);
 $hover-menu-color: rgba(52, 86, 200, 0.589);
 $selected-menu-color: rgba(52, 86, 200, 0.589);
-$shadow: 10px 10px 15px -3px rgba(192, 192, 192, 0.235);
+$shadow: 10px 10px 15px -3px rgba(192, 192, 192, 0.4);
 $color-white: #fff;
 $color-selected:rgba(52, 86, 200, 1);
 $color-grey-light: #dcdcdc;
@@ -15,8 +15,12 @@ $validate-color: rgb(0, 184, 61);
 $color-blue-action:#007bff;
 $color-blue-action-hover:adjust(#007bff, 10);
 $color-text: rgb(31, 30, 30);
-$color-danger: #FF0E5F;
-$color-warning: #FFB100;
+$color-danger-backgound: hsla(340, 100%, 53%, 0.4);
+$color-danger: #ff0e5e;
+$color-warning-background: hsla(42, 100%, 50%, 0.4);
+$color-warning: #FFC107;
+$color-success-background: hsla(145, 63%, 49%, 0.4);
+$color-success: #2ecc70;
 $color-input:#f0f9ff;
 
 

@@ -15,8 +15,12 @@
 			<div class="group-form">
 				<fieldset class='flex flex-column'>
 					<legend>Creation compte</legend>
-					{{ form_row(registrationForm.email) }}
-					{{ form_row(registrationForm.plainPassword) }}
+					<div class="form-group">
+						{{ form_row(registrationForm.email) }}
+					</div>
+					<div class="form-group">
+						{{ form_row(registrationForm.plainPassword) }}
+					</div>
 					<div class="form-check flex align-center gap-5">
 						{{ form_widget(registrationForm.agreeTerms, { 'attr': {'class': 'form-check-input'} }) }}
 						{{ form_label(registrationForm.agreeTerms, 'Veuillez accepter les <a href="#">conditions générales</a>', { 'label_html': true, 'attr': {'class': 'form-check-label'} }) }}

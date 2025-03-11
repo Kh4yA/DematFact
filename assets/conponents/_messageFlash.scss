@@ -1,0 +1,17 @@
+@use '/assets/utils/root' as *;
+@import '/assets/functions/mixin';
+
+.alert-warning {
+    background: $color-warning-background;
+    @include alert($color-warning);
+}
+
+.alert-success {
+    background: $color-success;
+    @include alert($color-success);
+}
+
+.alert-danger {
+    background: $color-danger;
+    @include alert($color-danger);
+}

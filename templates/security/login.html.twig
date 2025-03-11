@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!
+{% endblock %}
+
+{% block body %}
+	<h1 class="center-text mb1r">Information de connexion</h1>
+	<div class="box-container">
+		<div class="container-form">
+
+			<form method="post">
+				{% if error %}
+					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+				{% endif %}
+
+				{% if app.user %}
+					<div class="mb-3">
+						You are logged in as
+						{{ app.user.userIdentifier }},
+						<a href="{{ path('app_logout') }}">Logout</a>
+					</div>
+				{% endif %}
+				<div class="group-form">
+					<fieldset class='flex flex-column'>
+						<legend>Connexion</legend>
+						<div class="form-group flex flex-column">
+							<label for="email">Email</label>
+							<input type="email" value="{{ last_username }}" name="email" id="email" class="form-control" placeholder='Email' autocomplete="email" required autofocus>
+						</div>
+						<div class="form-group flex flex-column">
+							<label for="password">Mot de passe</label>
+							<input type="password" name="password" id="password" class="form-control" placeholder='Mot de passe' autocomplete="current-password" required>
+						</div>
+						<div class="checkbox mb-3 flex align-center gap-5">
+							<input type="checkbox" name="_remember_me" id="_remember_me">
+							<label for="_remember_me">Remember me</label>
+						</div>
+
+
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+						<button class="btn btn-lg btn-principal margin-auto" type="submit">
+							CONNEXION
+						</button>
+						<div class="flex space-between">
+							<a href="#">Mot de passe oublié</a>
+							<a href="{{path('app_register')}}">Créer un compte</a>
+
+						</div>
+					</fieldset>
+				</div>
+			</form>
+		</div>
+
+	</div>
+{% endblock %}

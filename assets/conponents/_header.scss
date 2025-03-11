@@ -1,4 +1,5 @@
 @use '/assets/utils/root' as *;
+
 header{
     position: relative;
     height: 7vh;
@@ -7,13 +8,29 @@ header{
     .logo {
         position: absolute;
         top: 50%;
-        left: 1rem;
+        left: 2rem;
         transform: translateY(-50%);
 
         svg {
             fill: rgb(13, 2, 66);
             width: clamp(3.75rem, 0.3846rem + 13.4615vw, 12.5rem);
             height: auto;
+        }
+    }
+    .account{
+        position: absolute;
+        top: 50%;
+        right: 2rem;
+        transform: translateY(-50%);
+        a{
+            color: $color-white;
+            font-size: 1.3rem;
+        }
+        .account-img{
+            object-fit: cover;
+            img{
+                width: 3.5rem;
+            }
         }
     }
 

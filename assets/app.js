@@ -9,5 +9,3 @@ window.Stimulus = application; // ✅ Exposer Stimulus globalement
 const context = require.context("./controllers", true, /\.js$/);
 const controllers = definitionsFromContext(context);
 application.load(controllers);
-
-console.log("📦 Stimulus chargé avec les contrôleurs :", controllers);

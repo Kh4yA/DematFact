@@ -8,58 +8,74 @@
 	<div class="box-container" data-controller="form-client">
 		<div class="container-form">
 			<h2 class='center-text'>QUELLES SONT LES INFORMATIONS DE VOTRE CLIENT</h2>
+			{{form_start(createclientform)}}
 			<div class='flex'>
 				<div class='flex align-center margin-auto box-choice'>
 					<div class='type-client-selected' data-form-pro-target="clientPro">
-						<p>Client professionnel</p>
+						<p>Client particulier</p>
 					</div>
 					<div>
 						<label class="switch">
-							<input type="checkbox" data-action="change->form-client#toggleFormPro">
+							{{ form_widget(createclientform.isPro) }}
 							<span class="slider"></span>
 						</label>
 					</div>
 					<div class='type-client-no-selected' data-form-pro-target="clientPart">
-						<p>Client particulier</p>
+						<p>Client professionnel</p>
 					</div>
 				</div>
 			</div>
-			{{form_start(createclientform)}}
 			<div class="group-form flex">
 				<fieldset class='flex flex-column'>
 					<legend>Informations du client</legend>
-					<div>
+					<div class="form-group">
 						{{ form_row(createclientform.nom)}}
 					</div>
-					<div>
+					<div class="form-group">
 						{{ form_row(createclientform.prenom)}}
 					</div>
-					<div>
+					<div class="form-group">
 						{{ form_row(createclientform.fax)}}
 					</div>
 				</fieldset>
 				<fieldset class='flex flex-column'>
 					<legend>Informations de contact</legend>
-					{{ form_row(createclientform.email)}}
-					{{ form_row(createclientform.tel_portable)}}
-					{{ form_row(createclientform.tel_fixe)}}
+					<div class="form-group">
+						{{ form_row(createclientform.email)}}
+					</div>
+					<div class="form-group">
+						{{ form_row(createclientform.tel_portable)}}
+					</div>
+					<div class="form-group">
+						{{ form_row(createclientform.tel_fixe)}}
+					</div>
 				</fieldset>
 			</div>
 			<div class="group-form flex flex-column ">
 				<fieldset class='flex flex-column adresse'>
 					<legend>Information sur l'adresse</legend>
-					{{ form_row(createclientform.rue)}}
+					<div class="form-group">
+						{{ form_row(createclientform.rue)}}
+					</div>
 					<div class='flex adresse-detail space-between'>
-						{{ form_row(createclientform.ville)}}
-						{{ form_row(createclientform.code_postal)}}
+						<div class="form-group">
+							{{ form_row(createclientform.ville)}}
+						</div>
+						<div class="form-group">
+							{{ form_row(createclientform.code_postal)}}
+						</div>
 					</div>
 				</fieldset>
 			</div>
-			<div class="group-form flex flex-column d-none" data-form-pro-target="formPro">
+			<div class="group-form flex flex-column" data-form-pro-target="formPro">
 				<fieldset class='flex flex-column form-pro'>
 					<legend>Complément d'information Entreprise</legend>
-					{{ form_row(createclientform.siret)}}
-					{{ form_row(createclientform.raison_sociale)}}
+					<div class="form-group">
+						{{ form_row(createclientform.siret)}}
+					</div>
+					<div class="form-group">
+						{{ form_row(createclientform.raison_sociale)}}
+					</div>
 				</fieldset>
 			</div>
 			<div class='box-btn flex'>

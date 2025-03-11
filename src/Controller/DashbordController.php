@@ -2,19 +2,25 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\UX\Chartjs\Model\Chart;
 use App\Repository\FactureRepository;
 use Doctrine\DBAL\Query\Limit;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class DashbordController extends AbstractController
 {
     #[Route('/dashbord', name: 'app_dashbord')]
-    public function index(ChartBuilderInterface $chartBuilder, FactureRepository $factures): Response
-    {
+    public function index(ChartBuilderInterface $chartBuilder, FactureRepository $factures, EntityManagerInterface $entityManager): Response
+    {    
+        // Si l'utilisateur a une organisation, continuer normalement
+        /** @var User|null $user */
+        $user = $this->getUser();
         $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
         $documents = $factures->findby(
             array(),
@@ -63,5 +69,6 @@ final class DashbordController extends AbstractController
             'chart' => $chart,
             'documents' => $documents,
             'route' => $route,
+            'user' => $user,
         ]);
     }}

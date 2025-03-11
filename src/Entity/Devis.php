@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use App\Enum\EnumTypeDevis;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DevisRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
@@ -20,41 +23,43 @@ class Devis
     #[Groups("devis:read")]
     private ?string $numero = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups("devis:read")]
     private ?\DateTimeInterface $date_emission = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 20)]
     #[Groups("devis:read")]
     private ?string $statut = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2,options: ["default" => 0])]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, options: ["default" => 0])]
     #[Groups("devis:read")]
-    private ?string $total_ht = null;
+    private string $total_ht = "0.00";
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2,options: ["default" => 0])]
     #[Groups("devis:read")]
-    private ?string $total_ttc = null;
+    private ?string $total_ttc = "0.00";
 
     #[ORM\ManyToOne(inversedBy: 'devis')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups("devis")]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups("devis:read")]
     private ?Client $client = null;
 
-    #[ORM\ManyToOne(inversedBy: 'devis')]
-    #[Groups("devis")]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'devis')]
+    #[Groups("devis:read")]
     private ?User $user = null;
 
-    #[Groups("devis")]
+    #[ORM\ManyToOne(targetEntity: Organisation::class, inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups("devis:read")]
     private ?Organisation $organisation = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2,options: ["default" => 0])]
     #[Groups("devis:read")]
-    private ?string $total_tva = null;
+    private ?string $total_tva = '0.00';
 
     #[ORM\Column(length: 255)]
     #[Groups("devis:read")]
-    private ?string $remise = null;
+    private ?string $remise = '0.00';
 
     #[ORM\Column]
     #[Groups("devis:read")]
@@ -63,6 +68,17 @@ class Devis
     #[ORM\Column]
     #[Groups("devis:read")]
     private ?\DateTimeImmutable $update_at = null;
+
+    /**
+     * @var Collection<int, DevisLigne>
+     */
+    #[ORM\OneToMany(mappedBy: 'devis', targetEntity: DevisLigne::class, cascade: ['persist', 'remove'])]
+    private Collection $devisLignes;
+
+    public function __construct()
+    {
+        $this->devisLignes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -93,15 +109,14 @@ class Devis
         return $this;
     }
 
-    public function getStatut(): ?string
+    public function getStatut(): ?EnumTypeDevis
     {
-        return $this->statut;
+        return $this->statut ? EnumTypeDevis::from($this->statut) : null;
     }
 
-    public function setStatut(string $statut): static
+    public function setStatut(EnumTypeDevis $statut): static
     {
-        $this->statut = $statut;
-
+        $this->statut = $statut->value;
         return $this;
     }
 
@@ -209,6 +224,36 @@ class Devis
     public function setUpdateAt(\DateTimeImmutable $update_at): static
     {
         $this->update_at = $update_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DevisLigne>
+     */
+    public function getDevisLignes(): Collection
+    {
+        return $this->devisLignes;
+    }
+
+    public function addDevisLigne(DevisLigne $devisLigne): static
+    {
+        if (!$this->devisLignes->contains($devisLigne)) {
+            $this->devisLignes->add($devisLigne);
+            $devisLigne->setDevis($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevisLigne(DevisLigne $devisLigne): static
+    {
+        if ($this->devisLignes->removeElement($devisLigne)) {
+            // set the owning side to null (unless already changed)
+            if ($devisLigne->getDevis() === $this) {
+                $devisLigne->setDevis(null);
+            }
+        }
 
         return $this;
     }

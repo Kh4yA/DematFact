@@ -25,10 +25,10 @@ class Prestation
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $prix_ht = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $taxe = null;
 
     #[ORM\ManyToOne(inversedBy: 'prestations')]
@@ -40,11 +40,21 @@ class Prestation
     #[ORM\OneToMany(targetEntity: FactureLigne::class, mappedBy: 'prestation')]
     private Collection $factureLignes;
 
+    /**
+     * @var Collection<int, DevisLigne>
+     */
+    #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: DevisLigne::class)]
+    private Collection $devisLignes;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $prix_ttc = null;
+
 
 
     public function __construct()
     {
         $this->factureLignes = new ArrayCollection();
+        $this->devisLignes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +160,48 @@ class Prestation
                 $factureLigne->setPrestation(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DevisLigne>
+     */
+    public function getDevisLignes(): Collection
+    {
+        return $this->devisLignes;
+    }
+
+    public function addDevisLigne(DevisLigne $devisLigne): static
+    {
+        if (!$this->devisLignes->contains($devisLigne)) {
+            $this->devisLignes->add($devisLigne);
+            $devisLigne->setPrestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevisLigne(DevisLigne $devisLigne): static
+    {
+        if ($this->devisLignes->removeElement($devisLigne)) {
+            // set the owning side to null (unless already changed)
+            if ($devisLigne->getPrestation() === $this) {
+                $devisLigne->setPrestation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPrixTtc(): ?string
+    {
+        return $this->prix_ttc;
+    }
+
+    public function setPrixTtc(?string $prix_ttc): static
+    {
+        $this->prix_ttc = $prix_ttc;
 
         return $this;
     }

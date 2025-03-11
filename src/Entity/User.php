@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
@@ -18,12 +17,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('devis')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, nullable: true)]
     private ?string $email = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private bool $isEmailAuthEnabled = false;
+    
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $twoFactorCode = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $twoFactorExpiresAt = null;
+
+    #[ORM\Column(type: 'boolean', nullable:true )]
+private bool $isVerified = false;
     /**
      * @var list<string> The user roles
      */
@@ -36,45 +45,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = '';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $prenom = '';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $prenom = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $created_at = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tel_portable = null;
 
-    #[ORM\Column]
-    private ?bool $actif = true;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tel_fixe = null;
 
-    #[ORM\Column]
-    private ?bool $isverified = false;
-
-    #[ORM\ManyToOne(targetEntity: Organisation::class, inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: Organisation::class, inversedBy: 'users', fetch: 'EAGER')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Organisation $organisation = null;
-
-    /**
-     * @var Collection<int, Facture>
-     */
-    #[ORM\OneToMany(targetEntity: Facture::class, mappedBy: 'user')]
-    private Collection $factures;
-
-    #[ORM\Column(length: 255)]
-    private ?string $phone_number = '';
-
-    /**
-     * @var Collection<int, Devis>
-     */
-    #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'user')]
+    
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Devis::class)]
     private Collection $devis;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Facture::class)]
+    private Collection $factures;
 
     public function __construct()
-    {
-        $this->factures = new ArrayCollection();
-        $this->devis = new ArrayCollection();
-    }
+{
+    $this->factures = new ArrayCollection();
+    $this->devis = new ArrayCollection();
+}
+
 
     public function getId(): ?int
     {
@@ -148,7 +146,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = '';
+        // $this->plainPassword = null;
+    }
+
+    public function isEmailAuthEnabled(): bool
+    {
+        return $this->isEmailAuthEnabled;
+    }
+
+    public function enableEmailAuth(): void
+    {
+        $this->isEmailAuthEnabled = true;
+    }
+
+    public function disableEmailAuth(): void
+    {
+        $this->isEmailAuthEnabled = false;
+        $this->twoFactorCode = null;
+        $this->twoFactorExpiresAt = null;
+    }
+
+    public function generateTwoFactorCode(): string
+    {
+        $this->twoFactorCode = random_int(100000, 999999);
+        $this->twoFactorExpiresAt = new \DateTime('+10 minutes');
+
+        return $this->twoFactorCode;
+    }
+
+    public function isTwoFactorCodeValid(string $code): bool
+    {
+        return $this->twoFactorCode === $code && $this->twoFactorExpiresAt > new \DateTime();
     }
 
     public function getNom(): ?string
@@ -156,7 +184,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(?string $nom): static
     {
         $this->nom = $nom;
 
@@ -168,131 +196,57 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(?string $prenom): static
     {
         $this->prenom = $prenom;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getTelPortable(): ?string
     {
-        return $this->created_at;
+        return $this->tel_portable;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setTelPortable(?string $tel_portable): static
     {
-        $this->created_at = new \DateTimeImmutable();
+        $this->tel_portable = $tel_portable;
 
         return $this;
     }
 
-    public function isActif(): ?bool
+    public function getTelFixe(): ?string
     {
-        return $this->actif;
+        return $this->tel_fixe;
     }
 
-    public function setActif(bool $actif): static
+    public function setTelFixe(?string $tel_fixe): static
     {
-        $this->actif = $actif;
+        $this->tel_fixe = $tel_fixe;
 
         return $this;
     }
 
-    public function isverified(): ?bool
-    {
-        return $this->isverified;
-    }
-
-    public function setIsverified(bool $isverified): static
-    {
-        $this->isverified = $isverified;
-
-        return $this;
-    }
-
-    public function getOrganisation(): ?Organisation
+    public function getOrganisation(): ?organisation
     {
         return $this->organisation;
     }
 
-    public function setOrganisation(?Organisation $organisation): static
+    public function setOrganisation(?organisation $organisation): static
     {
         $this->organisation = $organisation;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Facture>
-     */
-    public function getFactures(): Collection
-    {
-        return $this->factures;
-    }
+public function isVerified(): bool
+{
+    return $this->isVerified;
+}
 
-    public function addFacture(Facture $facture): static
-    {
-        if (!$this->factures->contains($facture)) {
-            $this->factures->add($facture);
-            $facture->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFacture(Facture $facture): static
-    {
-        if ($this->factures->removeElement($facture)) {
-            // set the owning side to null (unless already changed)
-            if ($facture->getUser() === $this) {
-                $facture->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phone_number;
-    }
-
-    public function setPhoneNumber(string $phone_number): static
-    {
-        $this->phone_number = $phone_number;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Devis>
-     */
-    public function getDevis(): Collection
-    {
-        return $this->devis;
-    }
-
-    public function addDevi(Devis $devi): static
-    {
-        if (!$this->devis->contains($devi)) {
-            $this->devis->add($devi);
-            $devi->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDevi(Devis $devi): static
-    {
-        if ($this->devis->removeElement($devi)) {
-            // set the owning side to null (unless already changed)
-            if ($devi->getUser() === $this) {
-                $devi->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
+public function setIsVerified(bool $isVerified): self
+{
+    $this->isVerified = $isVerified;
+    return $this;
+}
 }

@@ -64,11 +64,15 @@
     background: $color-white;
 
     .header-box {
-        height: 2.5rem;
         background: $color-primary;
         border-radius: $radius-box-top;
-        padding: 0 .5rem;
+        padding: 1rem;
 
+        h1 {
+            font-size: 2rem;
+            color: $color-white;
+            margin: 0;
+        }
         h3 {
             font-size: $font-size-fluid;
             color: $color-white;

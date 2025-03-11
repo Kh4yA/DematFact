@@ -1,96 +1,116 @@
 <!DOCTYPE html>
 <html lang="fr">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="csrf-token" content="{{ csrf_token('dematFact_token') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token('dematFact_token') }}">
 
-		<title>
-			{% block title %}Welcome!
-			{% endblock %}
-		</title>
+    <title>{% block title %}Welcome!{% endblock %}</title>
 
-		<link rel="icon" href="data:image/svg+xml,
-									    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'>
-									        <text y='1.2em' font-size='96'>⚫️</text>
-									        <text y='1.3em' x='0.2em' font-size='76' fill='#fff'>sf</text>
-									    </svg>">
+    <link rel="icon" href="data:image/svg+xml,
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'>
+            <text y='1.2em' font-size='96'>⚫️</text>
+            <text y='1.3em' x='0.2em' font-size='76' fill='#fff'>sf</text>
+        </svg>">
 
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
-		{% endblock %}
-	</head>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-	<body>
-		<!-- HEADER -->
-		<header class="header">
-			<div class="logo">
-				<svg width="162" height="24" viewbox="0 0 162 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M18.7031 10.5938C18.7031 12.0521 18.5156 13.3698 18.1406 14.5469C17.7656 15.7135 17.2396 16.7552 16.5625 17.6719C15.8958 18.5781 15.099 19.3594 14.1719 20.0156C13.2448 20.6719 12.2292 21.2135 11.125 21.6406C10.0208 22.0573 8.84375 22.3698 7.59375 22.5781C6.35417 22.776 5.07812 22.875 3.76562 22.875C3.27604 22.875 2.79688 22.8646 2.32812 22.8438C1.85938 22.8125 1.38021 22.7708 0.890625 22.7188L1.32812 1.75C2.47396 1.38542 3.65104 1.13021 4.85938 0.984375C6.07812 0.828125 7.28646 0.75 8.48438 0.75C9.97396 0.75 11.3438 0.973958 12.5938 1.42188C13.8438 1.86979 14.9219 2.51562 15.8281 3.35938C16.7344 4.20312 17.4375 5.23438 17.9375 6.45312C18.4479 7.67188 18.7031 9.05208 18.7031 10.5938ZM12.2969 11.5938C12.3073 11.0312 12.2448 10.4896 12.1094 9.96875C11.9844 9.44792 11.7708 8.98958 11.4688 8.59375C11.1771 8.1875 10.8021 7.86458 10.3438 7.625C9.88542 7.375 9.33854 7.23958 8.70312 7.21875L8.07812 16.9062C8.70312 16.8125 9.27083 16.6094 9.78125 16.2969C10.2917 15.974 10.7292 15.5833 11.0938 15.125C11.4688 14.6562 11.7552 14.1406 11.9531 13.5781C12.1615 13.0052 12.276 12.4167 12.2969 11.8125V11.5938ZM34.4531 0.46875C34.3906 1.44792 34.3333 2.41667 34.2812 3.375C34.2292 4.33333 34.1615 5.30208 34.0781 6.28125L27.4531 6.625L27.2969 8.59375H31.9531L31.6094 13.4375L26.9219 13.5938L26.7656 15.875H30.6406H33.3906C33.3281 17.0208 33.2604 18.1615 33.1875 19.2969C33.125 20.4219 33.0677 21.5521 33.0156 22.6875L19.5469 23L20.0469 0.46875H34.4531ZM59.1562 0.21875L57.7188 23.1562L50.5938 23.4688L50.6562 11.375L47.4375 21.125H44.6875L42.2188 12.4062L42.1875 22.5312L34.9688 22.75L35.2812 1.15625L43.3125 0.84375L46.5 11.1875L50.75 0.21875H59.1562ZM79.7344 21.6562L71.9844 22.6562L71.0469 19.125H67.4844L66.7031 22.6562L58.7344 21.875L64.9531 1.0625L73.6406 0.625L79.7344 21.6562ZM70.4844 14.3438L69.2969 8.90625L68.1406 14.3438H70.4844ZM94.7344 0.65625L94.5781 7.28125L89.9219 7.46875L88.7344 22.2812L82.1406 22.625L82.1719 7.8125L77.5156 8.0625L77.7031 0.6875L94.7344 0.65625ZM110.391 0.46875C110.328 1.44792 110.271 2.41667 110.219 3.375C110.167 4.33333 110.099 5.30208 110.016 6.28125L103.391 6.625V8.59375H109.141L108.828 13.4375L103.359 13.5938L103.391 22.8438L95.4844 23L95.9844 0.46875H110.391ZM128.828 21.6562L121.078 22.6562L120.141 19.125H116.578L115.797 22.6562L107.828 21.875L114.047 1.0625L122.734 0.625L128.828 21.6562ZM119.578 14.3438L118.391 8.90625L117.234 14.3438H119.578ZM144.234 1.03125L143.359 7.625C143.057 7.54167 142.755 7.48438 142.453 7.45312C142.151 7.42188 141.849 7.40625 141.547 7.40625C140.776 7.40625 140.042 7.51042 139.344 7.71875C138.646 7.91667 138.026 8.22396 137.484 8.64062C136.953 9.05729 136.526 9.57812 136.203 10.2031C135.891 10.8281 135.734 11.5625 135.734 12.4062C135.734 12.9479 135.818 13.4167 135.984 13.8125C136.161 14.2083 136.406 14.5365 136.719 14.7969C137.031 15.0573 137.401 15.25 137.828 15.375C138.255 15.5 138.724 15.5625 139.234 15.5625C139.62 15.5625 140.021 15.5208 140.438 15.4375C140.854 15.3542 141.266 15.2448 141.672 15.1094C142.078 14.974 142.474 14.8177 142.859 14.6406C143.245 14.4635 143.599 14.2812 143.922 14.0938L143.297 21.4375C142.891 21.6458 142.448 21.8333 141.969 22C141.5 22.1562 141.016 22.2969 140.516 22.4219C140.016 22.5365 139.516 22.625 139.016 22.6875C138.516 22.75 138.036 22.7812 137.578 22.7812C136.255 22.7812 135.021 22.5365 133.875 22.0469C132.729 21.5573 131.734 20.8854 130.891 20.0312C130.047 19.1771 129.38 18.1719 128.891 17.0156C128.411 15.849 128.172 14.5938 128.172 13.25C128.172 11.4688 128.427 9.79167 128.938 8.21875C129.448 6.63542 130.198 5.25 131.188 4.0625C132.177 2.875 133.401 1.9375 134.859 1.25C136.328 0.5625 138.016 0.21875 139.922 0.21875C140.641 0.21875 141.375 0.276042 142.125 0.390625C142.885 0.505208 143.589 0.71875 144.234 1.03125ZM161.734 0.65625L161.578 7.28125L156.922 7.46875L155.734 22.2812L149.141 22.625L149.172 7.8125L144.516 8.0625L144.703 0.6875L161.734 0.65625Z" fill="white"/>
-				</svg>
-			</div>
-		</header>
+    {% block javascripts %}
+        {% block importmap %}
+            {{ importmap('app') }}
+        {% endblock %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
 
-		<div
-			class="flex {% if route == '/login' or route == '/register' %} full-width {% endif %}">
-			<!-- SIDEBAR -->
-			{% if route is defined and route != '/register' and route != '/login' %}
-				<aside class="sidebar">
-					<nav>
-						<a class="menu {% if route == '/dashbord' %}active{% endif %}" href="{{ path('app_dashbord') }}">Dashboard</a>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+<svg width="162" height="24" viewBox="0 0 162 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.7031 10.5938C18.7031 12.0521 18.5156 13.3698 18.1406 14.5469C17.7656 15.7135 17.2396 16.7552 16.5625 17.6719C15.8958 18.5781 15.099 19.3594 14.1719 20.0156C13.2448 20.6719 12.2292 21.2135 11.125 21.6406C10.0208 22.0573 8.84375 22.3698 7.59375 22.5781C6.35417 22.776 5.07812 22.875 3.76562 22.875C3.27604 22.875 2.79688 22.8646 2.32812 22.8438C1.85938 22.8125 1.38021 22.7708 0.890625 22.7188L1.32812 1.75C2.47396 1.38542 3.65104 1.13021 4.85938 0.984375C6.07812 0.828125 7.28646 0.75 8.48438 0.75C9.97396 0.75 11.3438 0.973958 12.5938 1.42188C13.8438 1.86979 14.9219 2.51562 15.8281 3.35938C16.7344 4.20312 17.4375 5.23438 17.9375 6.45312C18.4479 7.67188 18.7031 9.05208 18.7031 10.5938ZM12.2969 11.5938C12.3073 11.0312 12.2448 10.4896 12.1094 9.96875C11.9844 9.44792 11.7708 8.98958 11.4688 8.59375C11.1771 8.1875 10.8021 7.86458 10.3438 7.625C9.88542 7.375 9.33854 7.23958 8.70312 7.21875L8.07812 16.9062C8.70312 16.8125 9.27083 16.6094 9.78125 16.2969C10.2917 15.974 10.7292 15.5833 11.0938 15.125C11.4688 14.6562 11.7552 14.1406 11.9531 13.5781C12.1615 13.0052 12.276 12.4167 12.2969 11.8125V11.5938ZM34.4531 0.46875C34.3906 1.44792 34.3333 2.41667 34.2812 3.375C34.2292 4.33333 34.1615 5.30208 34.0781 6.28125L27.4531 6.625L27.2969 8.59375H31.9531L31.6094 13.4375L26.9219 13.5938L26.7656 15.875H30.6406H33.3906C33.3281 17.0208 33.2604 18.1615 33.1875 19.2969C33.125 20.4219 33.0677 21.5521 33.0156 22.6875L19.5469 23L20.0469 0.46875H34.4531ZM59.1562 0.21875L57.7188 23.1562L50.5938 23.4688L50.6562 11.375L47.4375 21.125H44.6875L42.2188 12.4062L42.1875 22.5312L34.9688 22.75L35.2812 1.15625L43.3125 0.84375L46.5 11.1875L50.75 0.21875H59.1562ZM79.7344 21.6562L71.9844 22.6562L71.0469 19.125H67.4844L66.7031 22.6562L58.7344 21.875L64.9531 1.0625L73.6406 0.625L79.7344 21.6562ZM70.4844 14.3438L69.2969 8.90625L68.1406 14.3438H70.4844ZM94.7344 0.65625L94.5781 7.28125L89.9219 7.46875L88.7344 22.2812L82.1406 22.625L82.1719 7.8125L77.5156 8.0625L77.7031 0.6875L94.7344 0.65625ZM110.391 0.46875C110.328 1.44792 110.271 2.41667 110.219 3.375C110.167 4.33333 110.099 5.30208 110.016 6.28125L103.391 6.625V8.59375H109.141L108.828 13.4375L103.359 13.5938L103.391 22.8438L95.4844 23L95.9844 0.46875H110.391ZM128.828 21.6562L121.078 22.6562L120.141 19.125H116.578L115.797 22.6562L107.828 21.875L114.047 1.0625L122.734 0.625L128.828 21.6562ZM119.578 14.3438L118.391 8.90625L117.234 14.3438H119.578ZM144.234 1.03125L143.359 7.625C143.057 7.54167 142.755 7.48438 142.453 7.45312C142.151 7.42188 141.849 7.40625 141.547 7.40625C140.776 7.40625 140.042 7.51042 139.344 7.71875C138.646 7.91667 138.026 8.22396 137.484 8.64062C136.953 9.05729 136.526 9.57812 136.203 10.2031C135.891 10.8281 135.734 11.5625 135.734 12.4062C135.734 12.9479 135.818 13.4167 135.984 13.8125C136.161 14.2083 136.406 14.5365 136.719 14.7969C137.031 15.0573 137.401 15.25 137.828 15.375C138.255 15.5 138.724 15.5625 139.234 15.5625C139.62 15.5625 140.021 15.5208 140.438 15.4375C140.854 15.3542 141.266 15.2448 141.672 15.1094C142.078 14.974 142.474 14.8177 142.859 14.6406C143.245 14.4635 143.599 14.2812 143.922 14.0938L143.297 21.4375C142.891 21.6458 142.448 21.8333 141.969 22C141.5 22.1562 141.016 22.2969 140.516 22.4219C140.016 22.5365 139.516 22.625 139.016 22.6875C138.516 22.75 138.036 22.7812 137.578 22.7812C136.255 22.7812 135.021 22.5365 133.875 22.0469C132.729 21.5573 131.734 20.8854 130.891 20.0312C130.047 19.1771 129.38 18.1719 128.891 17.0156C128.411 15.849 128.172 14.5938 128.172 13.25C128.172 11.4688 128.427 9.79167 128.938 8.21875C129.448 6.63542 130.198 5.25 131.188 4.0625C132.177 2.875 133.401 1.9375 134.859 1.25C136.328 0.5625 138.016 0.21875 139.922 0.21875C140.641 0.21875 141.375 0.276042 142.125 0.390625C142.885 0.505208 143.589 0.71875 144.234 1.03125ZM161.734 0.65625L161.578 7.28125L156.922 7.46875L155.734 22.2812L149.141 22.625L149.172 7.8125L144.516 8.0625L144.703 0.6875L161.734 0.65625Z" fill="white"/>
+</svg>
+        </div>
 
-						<a href="{{ path('app_gestion_client') }}" class="menu {% if route in ['/client/liste-client', '/client/creer'] %}active{% endif %}">
-							Liste des clients
-						</a>
+{% if user is defined and user is not null %}
+        <div class='account flex space-between gap-5 align-center'>
+            <div class="account-img">
+                <img src="{{ user.image is defined and user.image ? asset(user.image) : asset('../assets/images/Vector.png') }}" alt="logo de l'utilisateur">
+            </div>
+            <div>
+                <a href="{{ path('app_show_profil') }}">{{ user.organisation.getDesignationSociale }} | {{ user.getPrenom }}</a>
+            </div>
+        </div>
+        {% endif %}
+    </header>
 
-						<details {% if route in ['/document/facture', '/document/devis'] %} open {% endif %}>
-							<summary class='menu'>Gestion documents</summary>
-							<ul>
-								<li class='sous-menu {% if route == ' /document/facture' %}active{% endif %}'>
-									<a href="{{ path('app_facture') }}">Liste des factures</a>
-								</li>
-								<li class='sous-menu {% if route == ' /document/devis' %}active{% endif %}'>
-									<a href="{{ path('app_devis') }}">Liste des devis</a>
-								</li>
-							</ul>
-						</details>
+    <div class="flex {% if route == '/login' or route == '/register' %} full-width {% endif %}">
+        <!-- SIDEBAR -->
+        {% if route is defined and route != '/register' and route != '/login' %}
+            <aside class="sidebar">
+                <nav class='flex flex-column gap-5'>
+                    <a class="menu {% if route == '/dashbord' %}active{% endif %}" href="{{ path('app_dashbord') }}">Dashboard</a>
+                    <a href="{{ path('app_gestion_client') }}" class="menu {% if route in ['/client/liste-client', '/client/creer'] %}active{% endif %}">Liste des clients</a>
 
-						<details>
-							<summary class='menu'>Gestion services</summary>
-							<ul class='sous-menu'>
-								<li>
-									<a href="/gestion-services/services">Liste des services</a>
-								</li>
-								<li>
-									<a href="/gestion-services/services/add">Ajouter un service</a>
-								</li>
-							</ul>
-						</details>
+                    <details {% if route in ['/document/facture', '/document/devis'] %} open {% endif %}>
+                        <summary class='menu'>Gestion documents</summary>
+                        <ul class='flex flex-column gap-5'>
+                            <li class='sous-menu {% if route == ' /document/facture' %}active{% endif %}'>
+                                <a href="{{ path('app_facture') }}">Liste des factures</a>
+                            </li>
+                            <li class='sous-menu {% if route == ' /document/devis' %}active{% endif %}'>
+                                <a href="{{ path('app_devis') }}">Liste des devis</a>
+                            </li>
+                        </ul>
+                    </details>
 
-						<a class='menu' href="#">Suivi des paiements</a>
-						<a class='menu' href="#">Statistiques</a>
-						<a class='menu' href="#">Multi-utilisateurs</a>
-						<a class='menu' href="#">Paramètres</a>
-					</nav>
-				</aside>
-			{% endif %}
+                    <details>
+                        <summary class='menu'>Gestion services</summary>
+                        <ul class='sous-menu flex flex-column gap-5'>
+                            <li>
+                                <a href="/gestion-services/services">Liste des services</a>
+                            </li>
+                            <li>
+                                <a href="/gestion-services/services/add">Ajouter un service</a>
+                            </li>
+                        </ul>
+                    </details>
 
-			<!-- MAIN CONTENT -->
-			<main>
-				<div class="container1440"> {% block body %}{% endblock %}
-					</div>
-				</main>
-			</div>
-		</body>
-	</html>
-</div>
-<!-- FOOTER -->
-<footer>
-	{% block footer %}{% endblock %}
-</footer>
+                    <a class='menu' href="#">Suivi des paiements</a>
+                    <a class='menu' href="#">Statistiques</a>
+                    <a class='menu' href="#">Multi-utilisateurs</a>
+                    <a class='menu' href="#">Paramètres</a>
+                    <a class='menu' href="{{ path('app_logout') }}">Se déconnecter</a>
+                </nav>
+            </aside>
+        {% endif %}
 
-{% block javascripts %}
-	{% block importmap %}
-		{{ importmap('app') }}
-	{% endblock %}
-	{{ encore_entry_script_tags('app') }}
-{% endblock %}</body></html>
+        <!-- MAIN CONTENT -->
+        <main>
+            <div class="container1440">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success flex align-center justify-center">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger flex align-center justify-center">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('warning') %}
+                    <div class="alert alert-warning flex align-center justify-center">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% block body %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        {% block footer %}{% endblock %}
+    </footer>
+</body>
+</html>

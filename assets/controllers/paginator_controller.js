@@ -12,6 +12,11 @@ export default class extends Controller {
 
     async loadData(page) {
         try {
+            if (this.loading) {
+                console.warn("⚠️ Chargement déjà en cours, on ignore cet appel !");
+                return;
+            }
+            this.loading = true;
             const section = this.element.dataset.section
             //Verification des paramètre passé en url
             if (typeof page !== "number") {

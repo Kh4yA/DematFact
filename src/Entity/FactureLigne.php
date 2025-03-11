@@ -14,10 +14,10 @@ class FactureLigne
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $prix_unitaire_ht = null;
 
     #[ORM\Column(length: 255)]
@@ -26,7 +26,7 @@ class FactureLigne
     #[ORM\Column]
     private ?int $quantite = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $ligne_totale_ht = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]

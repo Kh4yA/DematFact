@@ -14,7 +14,7 @@ class Organisation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('devis','facture')]
+    #[Groups('devis', 'facture')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -41,11 +41,6 @@ class Organisation
     #[Groups("organisation")]
     private ?string $code_postal = null;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'organisation')]
-    private Collection $users;
 
     /**
      * @var Collection<int, Client>
@@ -77,25 +72,43 @@ class Organisation
     #[ORM\OneToMany(targetEntity: FactureLigne::class, mappedBy: 'organisation')]
     private Collection $factureLignes;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime_immutable', nullable: false)]
     private ?\DateTimeImmutable $created_at = null;
 
     /**
      * @var Collection<int, Devis>
      */
-    #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'organisation')]
+    #[ORM\OneToMany(mappedBy: 'organisation', targetEntity: Devis::class)]
     private Collection $devis;
+
+    #[ORM\Column(type: 'bigint', nullable: true)]
+    private ?int $siret = null;
+
+    /**
+     * @var Collection<int, DevisLigne>
+     */
+
+    #[ORM\OneToMany(mappedBy: 'organisation', targetEntity: DevisLigne::class)]
+    private Collection $devisLignes;
+
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'organisation')]
+    private Collection $users;
 
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->clients = new ArrayCollection();
         $this->factures = new ArrayCollection();
         $this->prestations = new ArrayCollection();
         $this->paiements = new ArrayCollection();
         $this->factureLignes = new ArrayCollection();
         $this->devis = new ArrayCollection();
+        $this->devisLignes = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -175,35 +188,6 @@ class Organisation
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setOrganisation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getOrganisation() === $this) {
-                $user->setOrganisation(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Client>
@@ -397,4 +381,75 @@ class Organisation
         return $this;
     }
 
+    public function getSiret(): ?int
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(int $siret): static
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DevisLigne>
+     */
+    public function getDevisLignes(): Collection
+    {
+        return $this->devisLignes;
+    }
+
+    public function addDevisLigne(DevisLigne $devisLigne): static
+    {
+        if (!$this->devisLignes->contains($devisLigne)) {
+            $this->devisLignes->add($devisLigne);
+            $devisLigne->setOrganisation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevisLigne(DevisLigne $devisLigne): static
+    {
+        if ($this->devisLignes->removeElement($devisLigne)) {
+            // set the owning side to null (unless already changed)
+            if ($devisLigne->getOrganisation() === $this) {
+                $devisLigne->setOrganisation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setOrganisation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getOrganisation() === $this) {
+                $user->setOrganisation(null);
+            }
+        }
+
+        return $this;
+    }
 }

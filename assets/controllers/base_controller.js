@@ -9,22 +9,29 @@ export default class extends Controller {
         this.csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || "";
         console.log("🔍 Token CSRF récupéré :", this.csrfToken);
 
-        this.observer = new MutationObserver(() => {
+        // Supprimer les anciens événements
+        // this.removeExistingEvents()
 
-            this.observer.observe(this.tableTarget, { childList: true, subtree: true });
+        // this.observer = new MutationObserver(() => {
 
-            // Attacher les événements existants
-            this.attachCheckboxEvents();
+        //     this.observer.observe(this.tableTarget, { childList: true, subtree: true });
 
-        });
+        //     // Attacher les événements existants
+        //     // this.attachCheckboxEvents();
+
+        // });
     }
-    attachCheckboxEvents() {
-        this.tableTarget.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
-            checkbox.removeEventListener("change", this.toggleCheckbox);
-            checkbox.addEventListener("change", this.toggleCheckbox.bind(this));
-        });
-    }
-
+    // attachCheckboxEvents() {
+    //     this.tableTarget.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+    //         checkbox.removeEventListener("change", this.toggleCheckbox);
+    //         checkbox.addEventListener("change", this.toggleCheckbox.bind(this));
+    //     });
+    // }
+    // removeExistingEvents() {
+    //     this.tableTarget.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+    //         checkbox.removeEventListener("change", this.toggleCheckbox);
+    //     });
+    // }
 
 
     createTable(datas) {
@@ -36,7 +43,7 @@ export default class extends Controller {
             return;
         }
         console.log(datas);
-        
+
 
         this.tableHeadTarget.innerHTML = '';
         this.tableBodyTarget.innerHTML = '';
@@ -172,7 +179,7 @@ export default class extends Controller {
     toggleCheckbox(event) {
         let checkbox = event.target;
         let isChecked = checkbox.checked;
-        let factureId = checkbox.dataset.id;
+        let documentId = checkbox.dataset.id;
         let url = `/api/${this.identifier}/update`
         this.gestionShowBoutons(isChecked)
         console.log(checkbox);
@@ -185,7 +192,7 @@ export default class extends Controller {
                 'X-CSRF-TOKEN': this.csrfToken  // 🔥 Ajoute le token si nécessaire
             },
             body: JSON.stringify({
-                id: factureId,
+                id: documentId,
                 selected: isChecked
             })
         })

@@ -1,79 +1,155 @@
     @use "/assets/utils/root" as *;
 
-.container-form {
-    width: 100%;
-    padding: 1rem;
+    .container-form {
+        width: 100%;
+        padding: 3rem;
 
-    h2 {
-        padding: 5rem;
-    }
-
-    .box-choice {
-        gap: 2rem;
-
-        p {
-            font-size: 1.5rem;
-        }
-    }
-    a{
-        color: $color-text;
-        text-decoration: underline;
-    }
-
-    .group-form {
-        gap: 1rem;
-        margin: 0 auto;
-        width: max-content;
-        padding: 2rem; // Ajout d'un padding pour aérer le contenu
-
-        input[type=text],
-        input[type=password],
-        input[type=number] {
-            border: 1px solid $color-primary-reverse; // Remplacement de `$color-grey-light` par une valeur
-            padding: 1rem;
-            font-size: 1rem;
-            width: 100%;
-            border-radius: 5px; // Ajout d’un arrondi pour un design plus doux
-            background-color: $color-input;
+        h2 {
+            padding: 5rem;
         }
 
-        fieldset {
-            padding: 2rem;
-            gap: 2.5rem;
-            width: 20vw;
-            box-shadow: $shadow;
+        .box-choice {
+            gap: 2rem;
 
-            legend {
+            p {
                 font-size: 1.5rem;
-                padding: 1rem;
             }
         }
 
-        .adresse {
-            width: calc(40vw + 1rem);
+        a {
+            color: $color-text;
+            text-decoration: underline;
+        }
 
-            .adresse-detail {
-                width: 100%;
+        .group-form {
+            gap: 1rem;
+            margin: 0 auto;
+            width: max-content;
+            padding: 2rem;
 
-                input {
-                    width: 18vw;
+            .form-group {
+                position: relative;
+                padding-top: 1.5rem;
+
+                label {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    margin-bottom: 1rem;
+                    transition: color 0.3s;
+                }
+
+                input[type="text"],
+                input[type="password"],
+                input[type="number"],
+                input[type="email"],
+                input[type="integer"],
+                input[type="email"],
+                textarea,
+                select {
+                    border: none;
+                    border-bottom: 1px solid black;
+                    padding: 1rem;
+                    font-size: 1rem;
+                    width: 100%;
+
+                    &:focus {
+                        outline: none;
+                        border-bottom: 2px solid $color-blue-action;
+                    }
+
+                    ::placeholder {
+                        color: $color-grey-light;
+                    }
+                }
+
+                select {
+                    width: calc(40vw + 1rem);
+                    cursor: pointer;
+                }
+
+                // Dès qu'un enfant (ici, l'input) reçoit le focus, le label change de couleur
+                &:focus-within {
+                    label {
+                        color: $color-blue-action;
+                        font-size: 1.2rem;
+                        transition: font-size .3s;
+                    }
+                }
+
+                label[for=client] {
+                    font-size: 2rem;
+                    margin-bottom: 2rem;
+                }
+            }
+
+            fieldset {
+                padding: 2rem;
+                gap: 2.5rem;
+                width: 20vw;
+                box-shadow: $shadow;
+                border-radius: $radius-btn;
+
+                legend {
+                    font-size: 1.5rem;
+                    padding: 1rem;
+                }
+            }
+
+            .adresse {
+                width: calc(40vw + 1rem);
+
+                .adresse-detail {
+                    width: 100%;
+
+                    input {
+                        width: 18vw;
+                    }
+                }
+            }
+
+            .form-pro,
+            .full-size {
+                width: calc(40vw + 1rem);
+            }
+
+            .ligne-devis-container {
+                flex-wrap: wrap;
+                margin-top: 3rem;
+                width: calc(40vw + 1rem);
+                gap: 1rem;
+                .form-group{
+                    width: calc(100% / 7);
+                    select{
+                        width: calc(100%);
+
+                    }
+                }
+                
+            }
+            .ligne-devis-description {
+                margin-top: 1rem;
+                .form-group{
+                    width: 70%;
+                }
+            }
+            button{
+                display: block;
+                width: fit-content;
+                height: fit-content;
+            }
+
+
+            .type-client-selected {
+                p {
+                    color: $color-selected;
+                }
+            }
+
+            .type-client-no-selected {
+                p {
+                    color: $color-grey-light;
                 }
             }
         }
-
-        .form-pro {
-            width: calc(40vw + 1rem);
-        }
     }
-
-    .type-client-selected {
-        p{
-            color: $color-selected;
-        }
-    }
-    .type-client-no-selected {
-        p{
-            color: $color-grey-light;
-        }
-    }
-}

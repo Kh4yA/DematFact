@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\EnumTypeClient;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,7 +22,7 @@ class Client
     #[Groups('client:read')]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups('client:read')]
     private ?string $prenom = null;
 
@@ -33,15 +34,15 @@ class Client
     #[Groups('client:read')]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups('client:read')]
     private ?string $rue = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups('client:read')]
     private ?string $ville = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups('client:read')]
     private ?string $code_postal = null;
 
@@ -76,7 +77,7 @@ class Client
     #[Groups('client:read')]
     private ?string $raison_sociale= null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'bigint', nullable: true)]
     #[Groups('client:read')]
     private ?int $siret = null;
 
@@ -84,7 +85,7 @@ class Client
     #[Groups('client:read')]
     private ?bool $actif = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 20)]
     #[Groups('client:read')]
     private ?string $type = null;
 
@@ -291,12 +292,12 @@ class Client
         return $this;
     }
 
-    public function getRaisonSocial(): ?string
+    public function getRaisonSociale(): ?string
     {
         return $this->raison_sociale;
     }
 
-    public function setRaisonSocial(?string $raison_sociale): static
+    public function setRaisonSociale(?string $raison_sociale): static
     {
         $this->raison_sociale = $raison_sociale;
 
@@ -327,16 +328,14 @@ class Client
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?EnumTypeClient
     {
-        return $this->type;
+        return $this->type ? EnumTypeClient::from($this->type) : null;
     }
-
-    public function setType(string $type): static
+    
+    public function setType(EnumTypeClient $type): static
     {
-        $this->type = $type;
-
+        $this->type = $type->value;
         return $this;
     }
-
 }

@@ -2,32 +2,36 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class CreateClientFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('isPro', CheckboxType::class, [
+                'label' => false, // On désactive le label auto
+                'required' => false,
+                'mapped' => false,
+                'attr' => [
+                    'data-action' => 'change->form-client#toggleFormPro',
+                ],
+            ])
             ->add('nom', TextType::class, [
-                'label' => false,
+                'label' => 'Nom (requis)',
                 'attr' => [
                     'placeholder' => 'Nom',
                     'class' => 'form-control'
                 ],
             ])
             ->add('prenom', TextType::class, [
-                'label' => false,
+                'label' => 'Prénom',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Prénom',
@@ -35,42 +39,45 @@ class CreateClientFormType extends AbstractType
                 ],
             ])
             ->add('email', TextType::class, [
-                'label' => false,
+                'label' => 'Email (requis)',
                 'attr' => [
                     'placeholder' => 'Email',
                     'class' => 'form-control'
                 ],
             ])
             ->add('rue', TextType::class, [
-                'label' => false,
+                'label' => 'Rue',
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Rue',
                     'class' => 'form-control'
                 ],
             ])
             ->add('ville', TextType::class, [
-                'label' => false,
+                'label' => 'Ville',
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Ville',
                     'class' => 'form-control'
                 ],
             ])
             ->add('code_postal', TextType::class, [
-                'label' => false,
+                'label' => 'Code postal',
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Code postale',
                     'class' => 'form-control'
                 ],
             ])
             ->add('tel_portable', TextType::class, [
-                'label' => false,
+                'label' => 'N° mobile (requis)',
                 'attr' => [
                     'placeholder' => 'Téléphone mobile',
                     'class' => 'form-control'
                 ],
             ])
             ->add('tel_fixe', TextType::class, [
-                'label' => false,
+                'label' => 'N° fixe',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Téléphone fixe',
@@ -78,7 +85,7 @@ class CreateClientFormType extends AbstractType
                 ],
             ])
             ->add('fax', TextType::class, [
-                'label' => false,
+                'label' => 'N° fax',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'fax',
@@ -86,7 +93,7 @@ class CreateClientFormType extends AbstractType
                 ],
             ])
             ->add('raison_sociale', TextType::class, [
-                'label' => false,
+                'label' => 'Raison sociale',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Raison sociale',
@@ -94,7 +101,7 @@ class CreateClientFormType extends AbstractType
                 ],
             ])
             ->add('siret', IntegerType::class, [
-                'label' => false,
+                'label' => 'SIRET',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Siret',
@@ -106,7 +113,7 @@ class CreateClientFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Client::class,
         ]);
     }
 }

@@ -31,11 +31,11 @@ class Facture
     private ?string $statut = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Groups('facture:read')]
+    #[Groups('facture:read', nullable: true)]
     private ?string $total_ht = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Groups('facture:read')]
+    #[Groups('facture:read', nullable: true)]
     private ?string $total_tva = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
@@ -43,11 +43,11 @@ class Facture
     private ?string $total_ttc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups('facture:read')]
+    #[Groups('facture:read', nullable: true)]
     private ?string $remise_pourcent = null;
 
     #[ORM\Column(length:255)]
-    #[Groups('facture:read')]
+    #[Groups('facture:read', nullable: true)]
     private ?string $remise = null;
 
     #[ORM\Column(nullable: true)]
@@ -61,9 +61,10 @@ class Facture
     #[ORM\ManyToOne(inversedBy: 'factures')]
     private ?Client $client = null;
 
-    #[ORM\ManyToOne(inversedBy: 'factures')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'factures')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
+    
     #[ORM\ManyToOne(inversedBy: 'factures')]
     private ?Organisation $organisation = null;
 

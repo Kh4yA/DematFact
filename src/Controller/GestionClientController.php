@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use DateTimeImmutable;
+use App\Enum\EnumTypeClient;
 use App\Form\CreateClientFormType;
 use App\Repository\ClientRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +21,13 @@ final class GestionClientController extends AbstractController
     #[Route('Gestion-client/liste-client', name: 'app_gestion_client')]
     public function index(Request $request): Response
     {
+        /** @var User|null $user */
+        $user = $this->getUser();
+
         $route = $request->getRequestUri(); // Alternative propre à $_SERVER['REQUEST_URI']
         return $this->render('gestion_client/index.html.twig', [
             'route' => $route,
+            'user' => $user,
         ]);
     }
 
@@ -35,8 +42,8 @@ final class GestionClientController extends AbstractController
     #[Route('/api/client', name: 'app_api_client')]
     public function showClient(ClientRepository $client, SerializerInterface $serializer, PaginatorInterface $paginator, Request $request): JsonResponse
     {
-        $query = $client->createQueryBuilder('c')->getQuery();
 
+        $query = $client->createQueryBuilder('c')->getQuery();
         // Utilisation de KnpPaginator pour la pagination
         $pagination = $paginator->paginate(
             $query,
@@ -53,7 +60,7 @@ final class GestionClientController extends AbstractController
                 'total_pages' => $totalPages
             ],
             'json',
-            ['groups' => 'client:read'] 
+            ['groups' => 'client:read']
         );
 
         return new JsonResponse($jsonData, 200, [], true);
@@ -103,14 +110,47 @@ final class GestionClientController extends AbstractController
      * 
      */
     #[Route('/client/creer', name: 'app_gestion_client/create')]
-    public function createClient(): Response
+    public function createClient(ClientRepository $repo, EntityManagerInterface $em, Request $request): Response
     {
-        $route = ($_SERVER['REQUEST_URI']);
+        /** @var User|null $user */
+        $user = $this->getUser();
+
+        $route = $request->getRequestUri();
         $form = $this->createForm(CreateClientFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $data->setOrganisation($user->getOrganisation());
+            $data->setCreatedAt(new DateTimeImmutable('now'));
+            $data->setActif(true);
+            // Vérifier si la case "Client professionnel" est cochée
+            $isPro = $form->get('isPro')->getData() ?? false;
+            // Appliquer l'ENUM correspondant
+            if ($isPro) {
+                $data->setType(EnumTypeClient::PARTICULIER);
+            } else {
+                $data->setType(EnumTypeClient::ENTREPRISE);
+            }
+            $client = $repo->findOneBy(['nom' => $data->getNom(), 'prenom' => $data->getPrenom()]);
+            if ($client) {
+                $this->addFlash('error', 'Un client à ce nom existe déjà !');
+                return $this->redirectToRoute('app_gestion_client/create');
+            }
+            // Créer un nouveau client
+            $em->persist($data);
+            $em->flush();
+            $this->addFlash('success', 'Client créé avec succès !');
+            return $this->redirectToRoute('app_gestion_client/create');
+        } else if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('error', 'Formulaire non valide !');
+            return $this->redirectToRoute('app_gestion_client/create');
+        }
+
 
         return $this->render('gestion_client/creation.html.twig', [
             'route' => $route,
             'createclientform' => $form,
+            'user' => $user,
         ]);
     }
 }
